@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 220" fill="none">
+  <ellipse cx="160" cy="198" rx="112" ry="12" fill="#fcd34d" opacity=".4"/>
+  <!-- bản đồ -->
+  <path d="M40 52l60-18 60 18 60-18 60 18v130l-60 18-60-18-60 18-60-18z" fill="#fef3c7" stroke="#d97706" stroke-width="5" stroke-linejoin="round"/>
+  <path d="M100 34v130M160 52v130M220 34v130" stroke="#d97706" stroke-width="4" opacity=".6"/>
+  <path d="M62 96c22-14 44 4 66-6 20-9 34 6 56 0 18-5 30 6 46 2" stroke="#22c55e" stroke-width="6" stroke-linecap="round" opacity=".8"/>
+  <path d="M74 132c26 8 46-8 70-2 22 5 40-6 62-2" stroke="#38bdf8" stroke-width="6" stroke-linecap="round" opacity=".8"/>
+  <!-- ghim địa điểm -->
+  <path d="M186 60c14 0 25 11 25 25 0 18-25 42-25 42s-25-24-25-42c0-14 11-25 25-25z" fill="#ef4444"/>
+  <circle cx="186" cy="85" r="10" fill="#fff"/>
+  <!-- la bàn -->
+  <circle cx="266" cy="152" r="34" fill="#ffffff" stroke="#334155" stroke-width="5"/>
+  <path d="M266 128l10 24 24 10-24 10-10 24-10-24-24-10 24-10z" fill="#ef4444"/>
+  <circle cx="266" cy="162" r="6" fill="#334155"/>
+</svg>

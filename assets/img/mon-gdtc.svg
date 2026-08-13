@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 220" fill="none">
+  <ellipse cx="160" cy="198" rx="112" ry="12" fill="#67e8f9" opacity=".4"/>
+  <!-- quả bóng -->
+  <circle cx="118" cy="118" r="58" fill="#ffffff" stroke="#334155" stroke-width="5"/>
+  <path d="M118 82l22 16-8 26h-28l-8-26z" fill="#334155"/>
+  <path d="M118 60v22M84 106l-22-8M152 106l22-8M96 150l-12 20M140 150l12 20" stroke="#334155" stroke-width="5"/>
+  <!-- vợt cầu lông -->
+  <g transform="rotate(28 236 100)">
+    <ellipse cx="236" cy="76" rx="30" ry="40" fill="#e0f2fe" stroke="#0891b2" stroke-width="6"/>
+    <path d="M216 60h40M216 76h40M216 92h40M226 44v66M246 44v66" stroke="#7dd3fc" stroke-width="3"/>
+    <rect x="228" y="116" width="16" height="60" rx="8" fill="#0891b2"/>
+  </g>
+  <!-- còi -->
+  <path d="M42 168a22 22 0 1 1 44 0 22 22 0 0 1-44 0z" fill="#ef4444"/>
+  <rect x="78" y="158" width="30" height="14" rx="7" fill="#ef4444"/>
+  <circle cx="64" cy="168" r="7" fill="#fee2e2"/>
+  <path d="M276 44l3 8 8 3-8 3-3 8-3-8-8-3 8-3z" fill="#fbbf24"/>
+</svg>

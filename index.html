@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Bảng Xanh – Giáo án trình chiếu PPT</title>
+<meta name="description" content="Kho bài giảng trình chiếu PPT tiểu học theo môn, lớp và 35 tuần học, mở thẳng từ Google Drive.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 36'><rect x='2' y='4' width='32' height='26' rx='4' fill='%23e8f6ee'/><path d='M18 24c-4-6 1-13 8-13 1 7-3 13-8 13z' fill='%2322a55b'/><path d='M18 24c1-5-2-10-7-11 0 6 3 10 7 11z' fill='%235bc17f'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.cdnfonts.com/css/utm-avo" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<!-- ===== Bộ icon dùng chung (lấy từ bản thiết kế) ===== -->
+<svg style="display:none" aria-hidden="true">
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M10 21v-6h4v6"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></symbol>
+  <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></symbol>
+  <symbol id="i-grid" viewBox="0 0 24 24"><rect x="4" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 20c0-3 2.5-5 5.5-5s5.5 2 5.5 5"/><circle cx="17" cy="9" r="2.4"/><path d="M16.5 15c2.5.2 4 2 4 4.5"/></symbol>
+  <symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20.5s-7.5-4.7-9.3-9C1.3 8 3.4 4.9 6.6 4.9c2 0 3.6 1.1 5.4 3 1.8-1.9 3.4-3 5.4-3 3.2 0 5.3 3.1 3.9 6.6-1.8 4.3-9.3 9-9.3 9z"/></symbol>
+  <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="16" rx="2.5"/><path d="M8 3v4M16 3v4M3.5 10h17"/></symbol>
+  <symbol id="i-calendar-full" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="16" rx="2.5"/><path d="M8 3v4M16 3v4M3.5 10h17M8 14h.01M12 14h.01M16 14h.01M8 17.5h.01M12 17.5h.01"/></symbol>
+  <symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v6M9.5 11.5 12 14l2.5-2.5"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></symbol>
+  <symbol id="i-upload" viewBox="0 0 24 24"><path d="M7 18a5 5 0 0 1-.9-9.9A6 6 0 0 1 17.8 9 4.5 4.5 0 0 1 17 18h-2"/><path d="M12 13v7M9.5 15.5 12 13l2.5 2.5"/></symbol>
+  <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 4v12m0 0 4-4m-4 4-4-4"/><path d="M4 18v1a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-1"/></symbol>
+  <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></symbol>
+  <symbol id="i-back" viewBox="0 0 24 24"><path d="m15 6-6 6 6 6"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15"/><path d="m13 6 6 6-6 6"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 5.5v13l10.5-6.5z"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.5 12S6 6 12 6s9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6z"/><circle cx="12" cy="12" r="2.8"/></symbol>
+  <symbol id="i-link" viewBox="0 0 24 24"><path d="M10.5 13.5a4 4 0 0 0 5.7 0l2.6-2.6a4 4 0 1 0-5.7-5.7L11.6 6.7"/><path d="M13.5 10.5a4 4 0 0 0-5.7 0l-2.6 2.6a4 4 0 1 0 5.7 5.7l1.4-1.4"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M9 7V5h6v2M6 7l1 13h10l1-13"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+  <symbol id="i-external" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-8.5 8.5"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4.5 21c0-4 3.5-6.5 7.5-6.5s7.5 2.5 7.5 6.5"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/></symbol>
+  <symbol id="i-edit" viewBox="0 0 24 24"><path d="M4 20h4L19 9a2.4 2.4 0 0 0-3.4-3.4L4.5 16.7 4 20z"/></symbol>
+  <symbol id="i-support" viewBox="0 0 24 24"><path d="M4 13a8 8 0 0 1 16 0"/><rect x="3" y="13" width="4" height="6" rx="2"/><rect x="17" y="13" width="4" height="6" rx="2"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="m8.5 12.5 2.5 2.5 4.5-5"/></symbol>
+  <symbol id="i-book-open" viewBox="0 0 24 24"><path d="M2 6s2-2 6-2 6 2 6 2v14s-2-2-6-2-6 2-6 2V6z"/><path d="M14 6s2-2 6-2v14c-4 0-6 2-6 2"/></symbol>
+</svg>
+<svg style="display:none" aria-hidden="true">
+  <symbol id="f-star" viewBox="0 0 24 24"><path d="M3 8l5 4 4-7 4 7 5-4-2 11H5L3 8z"/></symbol>
+  <symbol id="f-heart" viewBox="0 0 24 24"><path d="M12 20.5s-7.5-4.7-9.3-9C1.3 8 3.4 4.9 6.6 4.9c2 0 3.6 1.1 5.4 3 1.8-1.9 3.4-3 5.4-3 3.2 0 5.3 3.1 3.9 6.6-1.8 4.3-9.3 9-9.3 9z"/></symbol>
+  <symbol id="f-grid" viewBox="0 0 24 24"><rect x="4" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5"/></symbol>
+  <symbol id="f-leaf" viewBox="0 0 24 24"><path d="M12 22c-2-8 2-16 10-18-1 9-4 16-10 18z"/></symbol>
+  <symbol id="f-check-c" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11"/></symbol>
+</svg>
+
+<div class="layout">
+
+  <!-- ===================== SIDEBAR ===================== -->
+  <aside id="sidebar">
+    <div class="side-card">
+      <a class="logo" href="#/">
+        <svg width="36" height="36" viewBox="0 0 36 36" fill="none"><rect x="2" y="4" width="32" height="26" rx="4" fill="#e8f6ee"/><path d="M18 24c-4-6 1-13 8-13 1 7-3 13-8 13z" fill="#22a55b"/><path d="M18 24c1-5-2-10-7-11 0 6 3 10 7 11z" fill="#5bc17f"/><path d="M18 24v5" stroke="#22a55b" stroke-width="2.4" stroke-linecap="round"/></svg>
+        <div><div class="logo-name">Bảng Xanh</div><div class="logo-sub">Giáo án trình chiếu PPT</div></div>
+      </a>
+      <nav id="nav">
+        <a class="nav-item" href="#/"><svg class="ic19"><use href="#i-home"/></svg> Trang chủ</a>
+        <a class="nav-item" href="#/giao-an"><svg class="ic19"><use href="#i-book"/></svg> Giáo án</a>
+        <a class="nav-item" href="#/bo-suu-tap"><svg class="ic19"><use href="#i-folder"/></svg> Bộ sưu tập</a>
+        <a class="nav-item" href="#/tuan-hoc"><svg class="ic19"><use href="#i-grid"/></svg> Tuần học</a>
+        <a class="nav-item" href="#/lop-hoc"><svg class="ic19"><use href="#i-users"/></svg> Lớp học</a>
+        <a class="nav-item" href="#/yeu-thich"><svg class="ic19"><use href="#i-heart"/></svg> Yêu thích</a>
+        <a class="nav-item" href="#/lich-day"><svg class="ic19"><use href="#i-calendar"/></svg> Lịch dạy</a>
+        <a class="nav-item" href="#/huong-dan"><svg class="ic19"><use href="#i-help"/></svg> Tài liệu hướng dẫn</a>
+      </nav>
+    </div>
+
+    <div id="sideExtra"></div>
+
+    <img class="teacher" src="assets/img/teacher.png" alt="Cô giáo">
+  </aside>
+  <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+  <!-- ===================== NỘI DUNG ===================== -->
+  <main>
+    <div class="m-logo">
+      <button class="m-menu" id="btnMenu" aria-label="Mở menu"><svg class="ic22"><use href="#i-menu"/></svg></button>
+      <a class="logo" href="#/" style="padding:0">
+        <svg width="34" height="34" viewBox="0 0 36 36" fill="none"><rect x="2" y="4" width="32" height="26" rx="4" fill="#e8f6ee"/><path d="M18 24c-4-6 1-13 8-13 1 7-3 13-8 13z" fill="#22a55b"/><path d="M18 24c1-5-2-10-7-11 0 6 3 10 7 11z" fill="#5bc17f"/></svg>
+        <div><div class="logo-name">Bảng Xanh</div><div class="logo-sub">Giáo án trình chiếu PPT</div></div>
+      </a>
+    </div>
+
+    <div class="topbar">
+      <form class="search" id="searchForm" role="search">
+        <svg class="ic17"><use href="#i-search"/></svg>
+        <input id="searchInput" type="search" placeholder="Tìm kiếm giáo án, bài giảng, chủ đề..." aria-label="Tìm kiếm" autocomplete="off">
+        <button type="submit" class="search-go" aria-label="Tìm"><svg class="ic17"><use href="#i-search"/></svg></button>
+      </form>
+      <a class="btn-pro" href="#/huong-dan"><svg class="ic15 fill-star" viewBox="0 0 24 24"><use href="#f-star"/></svg> Nâng cấp Pro</a>
+      <button class="bell" id="btnBell" aria-label="Thông báo">
+        <svg class="ic24"><use href="#i-bell"/></svg><span class="badge" id="bellBadge">3</span>
+      </button>
+      <a class="user" href="#/tai-khoan">
+        <img src="assets/img/avatar.png" alt="">
+        <b id="meName">Hoàng Thị Mai</b>
+        <svg class="ic14 chev"><use href="#i-chevron"/></svg>
+      </a>
+    </div>
+
+    <div id="view"></div>
+  </main>
+</div>
+
+<!-- ===================== THANH TAB DƯỚI ===================== -->
+<div class="tabs" id="tabs">
+  <a class="tab" href="#/" data-tab="#/"><svg class="ic22"><use href="#i-home"/></svg><span>Trang chủ</span></a>
+  <a class="tab" href="#/tim-kiem" data-tab="#/tim-kiem"><svg class="ic22"><use href="#i-search"/></svg><span>Tìm kiếm</span></a>
+  <a class="tab" href="#/lop-hoc" data-tab="#/lop-hoc"><svg class="ic22"><use href="#i-users"/></svg><span>Lớp học của tôi</span></a>
+  <a class="tab" href="#/yeu-thich" data-tab="#/yeu-thich"><svg class="ic22"><use href="#i-heart"/></svg><span>Yêu thích</span></a>
+  <a class="tab" href="#/tai-khoan" data-tab="#/tai-khoan"><svg class="ic22"><use href="#i-user"/></svg><span>Tài khoản</span></a>
+</div>
+
+<div id="modalRoot"></div>
+<div id="toastRoot" class="toast-root" aria-live="polite"></div>
+
+
+<!-- ===========================================================================
+     LINK BÀI GIẢNG nằm ở file  assets/js/links.js  (mở bằng Notepad là sửa được)
+     =========================================================================== -->
+<script src="assets/js/links.js"></script>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/app.js"></script>
+</body>
+</html>

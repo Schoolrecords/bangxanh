@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>35 tuần – Bảng Xanh</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.cdnfonts.com/css/utm-avo" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#eef4fa;font-family:'UTM Avo','Nunito',sans-serif;-webkit-font-smoothing:antialiased;color:#1e293b}
+a{text-decoration:none;color:inherit}
+.wrap{max-width:1180px;margin:0 auto;padding:20px 24px 60px}
+.top{display:flex;align-items:center;gap:12px;margin-bottom:24px;flex-wrap:wrap}
+.back{display:flex;align-items:center;gap:7px;background:#fff;border:1px solid #e2e8f0;border-radius:999px;padding:9px 18px;font-weight:700;font-size:14px;color:#334155}
+.back:hover{border-color:#16a34a;color:#16a34a}
+.crumb{font-size:14px;font-weight:700;color:#94a3b8}
+.crumb b{color:#1e293b;}
+.hero{display:flex;align-items:center;gap:20px;border-radius:20px;padding:22px 30px;margin-bottom:26px}
+.hero img.mascot{width:80px;height:84px;object-fit:contain}
+.hero h1{margin:0 0 4px;font-size:27px;font-weight:700;letter-spacing:-.3px}
+.hero p{margin:0;font-size:14px;font-weight:700;color:#475569}
+.hk{display:flex;align-items:center;gap:10px;margin:26px 0 14px}
+.hk .bar{width:4px;height:22px;border-radius:4px;background:#22a55b}
+.hk h2{margin:0;font-size:19px;font-weight:700;}
+.hk .ct{font-size:13px;font-weight:700;color:#94a3b8}
+.weeks{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
+.week{position:relative;background:#fff;border:1px solid #eaf0f6;border-radius:14px;padding:14px 10px 12px;text-align:center;box-shadow:0 1px 3px rgba(30,64,120,.05);transition:.15s;display:block}
+.week:hover{box-shadow:0 8px 20px rgba(30,64,120,.14);transform:translateY(-2px)}
+.week .num{width:44px;height:44px;border-radius:13px;margin:0 auto 8px;display:flex;align-items:center;justify-content:center;font-size:19px;font-weight:700;color:#fff;}
+.week .lb{font-size:13.5px;font-weight:700;}
+.week .st{display:flex;align-items:center;justify-content:center;gap:5px;font-size:11.5px;font-weight:700;color:#94a3b8;margin-top:4px}
+.week .st .dot{width:7px;height:7px;border-radius:99px;background:#cbd5e1}
+.week.has .st{color:#16a34a}
+.week.has .st .dot{background:#22c55e}
+.week.none{opacity:.55;cursor:default}
+.week.none:hover{transform:none;box-shadow:0 1px 3px rgba(30,64,120,.05)}
+@media (max-width:899px){
+  .weeks{grid-template-columns:repeat(3,1fr);gap:10px}
+  .hero{flex-direction:column;text-align:center;padding:20px 16px}
+  .hero h1{font-size:22px}
+}
+@media (max-width:520px){.weeks{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <a class="back" href="index.html"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg> Trang chủ</a>
+    <a class="back" id="back-mon" href="#"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m15 6-6 6 6 6"/></svg> Chọn lớp khác</a>
+    <div class="crumb">Trang chủ / <b id="crumb-mon">Môn</b> / <b id="crumb-lop">Lớp</b></div>
+  </div>
+  <div class="hero" id="hero">
+    <img class="mascot" src="assets/mascot.png" alt="Linh vật">
+    <div>
+      <h1 id="title">35 tuần</h1>
+      <p>Bấm vào tuần để mở giáo án trên Google Drive. Tuần có chấm xanh là đã có bài.</p>
+    </div>
+  </div>
+  <div class="hk"><span class="bar"></span><h2 id="hk1-t">Học kì 1</h2><span class="ct">Tuần 1–18</span></div>
+  <div class="weeks" id="hk1"></div>
+  <div class="hk"><span class="bar"></span><h2 id="hk2-t">Học kì 2</h2><span class="ct">Tuần 19–35</span></div>
+  <div class="weeks" id="hk2"></div>
+</div>
+<script src="links.js"></script>
+<script>
+const q = new URLSearchParams(location.search);
+const mon = q.get('mon') || 'toan';
+const lop = parseInt(q.get('lop') || '1', 10);
+const S = window.SUBJECTS[mon] || window.SUBJECTS.toan;
+const L = (window.DRIVE_LINKS[mon] || {})[lop] || {};
+document.title = S.name + ' lớp ' + lop + ' – 35 tuần – Bảng Xanh';
+document.getElementById('crumb-mon').textContent = 'Môn ' + S.name;
+document.getElementById('crumb-lop').textContent = 'Lớp ' + lop;
+document.getElementById('back-mon').href = 'mon.html?mon=' + mon;
+const h = document.getElementById('hero');
+h.style.background = S.bg;
+const t = document.getElementById('title');
+t.textContent = S.name + ' lớp ' + lop + ' – Giáo án 35 tuần';
+t.style.color = S.color;
+document.getElementById('hk1-t').style.color = S.color;
+document.getElementById('hk2-t').style.color = S.color;
+function week(n) {
+  const link = L[n];
+  const el = document.createElement(link ? 'a' : 'div');
+  el.className = 'week ' + (link ? 'has' : 'none');
+  if (link) { el.href = link; el.target = '_blank'; el.rel = 'noopener'; }
+  el.innerHTML = '<div class="num" style="background:linear-gradient(135deg,' + S.color + 'cc,' + S.color + ')">' + n + '</div>' +
+    '<div class="lb" style="color:' + S.color + '">Tuần ' + n + '</div>' +
+    '<div class="st"><span class="dot"></span>' + (link ? 'Mở Drive' : 'Sắp có') + '</div>';
+  return el;
+}
+const hk1 = document.getElementById('hk1'), hk2 = document.getElementById('hk2');
+for (let n = 1; n <= 18; n++) hk1.appendChild(week(n));
+for (let n = 19; n <= 35; n++) hk2.appendChild(week(n));
+</script>
+</body>
+</html>

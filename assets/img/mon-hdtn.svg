@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 220" fill="none">
+  <ellipse cx="160" cy="198" rx="112" ry="12" fill="#fdba74" opacity=".4"/>
+  <!-- lều trại -->
+  <path d="M160 46l84 132H76z" fill="#fb923c"/>
+  <path d="M160 46l30 132h-60z" fill="#fed7aa"/>
+  <path d="M160 96l16 82h-32z" fill="#ea580c"/>
+  <path d="M60 178h200" stroke="#16a34a" stroke-width="10" stroke-linecap="round"/>
+  <!-- ngôi sao -->
+  <path d="M262 40l10 24 26 3-19 18 5 26-22-13-22 13 5-26-19-18 26-3z" fill="#fbbf24"/>
+  <!-- ba lô -->
+  <rect x="24" y="118" width="52" height="60" rx="14" fill="#38bdf8"/>
+  <path d="M36 118a14 14 0 0 1 28 0" stroke="#0284c7" stroke-width="6"/>
+  <rect x="32" y="142" width="36" height="20" rx="7" fill="#e0f2fe"/>
+  <!-- lửa trại -->
+  <path d="M96 30c10 8 6 18 0 24-8-6-10-16 0-24z" fill="#f59e0b"/>
+</svg>

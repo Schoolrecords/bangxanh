@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bảng Xanh – Giáo án trình chiếu PPT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.cdnfonts.com/css/utm-avo" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#eef4fa;font-family:'UTM Avo','Nunito',sans-serif;-webkit-font-smoothing:antialiased;color:#1e293b}
+a{color:#16a34a;text-decoration:none}a:hover{color:#15803d}
+button{font-family:'UTM Avo','Nunito',sans-serif;cursor:pointer;border:none}
+.layout{max-width:1400px;margin:0 auto;display:flex;gap:20px;padding:20px 24px 0;align-items:flex-start}
+/* Sidebar */
+aside{width:240px;flex-shrink:0;display:flex;flex-direction:column;gap:16px}
+.side-card{background:#fff;border-radius:18px;padding:14px 12px;box-shadow:0 1px 3px rgba(30,64,120,.06)}
+.logo{display:flex;align-items:center;gap:10px;padding:2px 4px 12px}
+.logo-name{font-size:20px;font-weight:700;color:#16a34a;letter-spacing:-.3px;}
+.logo-sub{font-size:11px;color:#64748b;font-weight:600}
+nav{display:flex;flex-direction:column;gap:4px}
+.nav-item{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:12px;color:#475569;font-weight:700;font-size:14.5px;cursor:pointer}
+.nav-item:hover{background:#f1f5f9;color:#16a34a}
+.nav-item.active{padding:12px 14px;background:linear-gradient(90deg,#2f6fed,#3b82f6);color:#fff;font-weight:700;font-size:15px;box-shadow:0 4px 10px rgba(47,111,237,.3)}
+.nav-item svg{color:#64748b}.nav-item.active svg{color:#fff}
+.pro-card{background:linear-gradient(180deg,#effaf2,#e4f6ea);border:1px solid #d3eedd;border-radius:18px;padding:16px 16px 18px}
+.support-card{background:#fff;border:1px solid #e2e8f0;border-radius:18px;padding:16px}
+.card-head{display:flex;align-items:center;gap:9px;margin-bottom:8px}
+.card-head .ic{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center}
+.card-head span.tt{font-weight:700;font-size:15.5px}
+.card-body{font-size:13px;font-weight:600;line-height:1.55;margin-bottom:12px}
+.btn-green{background:linear-gradient(90deg,#22a55b,#16a34a);color:#fff;border-radius:10px;padding:10px 0;font-weight:700;font-size:14px;width:100%;box-shadow:0 3px 8px rgba(34,165,91,.3)}
+.btn-green:hover{filter:brightness(1.05)}
+.btn-outline{background:#fff;border:1.5px solid #cbd5e1;border-radius:10px;padding:8px 20px;font-weight:700;font-size:13.5px;color:#334155}
+.btn-outline:hover{border-color:#16a34a;color:#16a34a}
+.teacher{width:100%;border-radius:16px;display:block;mix-blend-mode:multiply;-webkit-mask-image:linear-gradient(180deg,#000 86%,transparent 100%);mask-image:linear-gradient(180deg,#000 86%,transparent 100%)}
+/* Main */
+main{flex:1;min-width:0;display:flex;flex-direction:column;gap:22px}
+.topbar{display:flex;align-items:center;gap:14px}
+.search{flex:1;display:flex;align-items:center;gap:10px;background:#fff;border:1px solid #e2e8f0;border-radius:999px;padding:11px 18px;color:#94a3b8}
+.search span{flex:1;font-size:14px;font-weight:600}
+.btn-pro{display:flex;align-items:center;gap:8px;background:linear-gradient(90deg,#22a55b,#16a34a);color:#fff;border-radius:999px;padding:10px 18px;font-weight:700;font-size:14px;box-shadow:0 3px 8px rgba(34,165,91,.3)}
+.bell{position:relative;cursor:pointer;color:#475569}
+.badge{position:absolute;top:-6px;right:-7px;background:#ef4444;color:#fff;font-size:10.5px;font-weight:700;border-radius:999px;min-width:17px;height:17px;display:flex;align-items:center;justify-content:center;border:2px solid #eef4fa}
+.user{display:flex;align-items:center;gap:9px;cursor:pointer}
+.user img{width:38px;height:38px;border-radius:999px;object-fit:cover;border:2px solid #fff;box-shadow:0 1px 4px rgba(30,64,120,.15)}
+.user b{font-weight:700;font-size:14.5px}
+/* Hero */
+.hero{position:relative;border-radius:20px;overflow:hidden;background:linear-gradient(100deg,#f2f7fe 0%,#e3edfb 55%,#dbe8fa 100%);padding:34px 0 26px 34px;min-height:340px}
+.hero-img{position:absolute;right:0;bottom:0;width:min(448px,44%);height:auto;object-fit:cover;-webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 14%);mask-image:linear-gradient(90deg,transparent 0%,#000 14%)}
+.hero-content{position:relative;max-width:min(430px,50%);display:flex;flex-direction:column;align-items:flex-start}
+.hero h1{margin:0 0 16px;font-size:34px;line-height:1.3;font-weight:700;color:#1d3f74;letter-spacing:-.3px;}
+.hero h1 em{font-style:normal;color:#ED6C47;}
+.checks{display:flex;flex-direction:column;gap:8px;margin-bottom:20px}
+.checks div{display:flex;align-items:center;gap:9px;font-size:14px;font-weight:700;color:#33507a}
+.btn-cta{display:flex;align-items:center;gap:10px;background:linear-gradient(90deg,#2fae62,#22a55b);color:#fff;border-radius:999px;padding:13px 26px;font-weight:700;font-size:16px;box-shadow:0 5px 14px rgba(34,165,91,.35);margin-bottom:28px}
+.btn-cta:hover{filter:brightness(1.05)}
+.features{display:flex;gap:clamp(10px,2vw,26px);flex-wrap:wrap;max-width:100%}
+.feature{position:relative;z-index:1}
+.feature{display:flex;flex-direction:column;align-items:center;gap:8px;width:min(96px,28%);text-align:center}
+.feature .ic{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;color:#fff}
+.feature span.lb{font-size:11.5px;font-weight:700;color:#3f5878;line-height:1.4}
+.dots{position:absolute;left:50%;transform:translateX(-50%);bottom:12px;display:flex;gap:7px}
+.dots span{width:9px;height:9px;border-radius:999px;background:#b9cdec}
+.dots span.on{background:#2f6fed}
+/* Quick actions */
+.quick{display:grid;grid-template-columns:repeat(6,1fr);gap:14px}
+.quick-card{background:#fff;border:1px solid #eaf0f6;border-radius:16px;padding:18px 8px 14px;display:flex;flex-direction:column;align-items:center;gap:11px;cursor:pointer;box-shadow:0 1px 3px rgba(30,64,120,.05);transition:.15s}
+.quick-card:hover{box-shadow:0 6px 16px rgba(30,64,120,.12);transform:translateY(-2px)}
+.quick-card .ic{width:46px;height:46px;border-radius:13px;display:flex;align-items:center;justify-content:center;color:#fff}
+.quick-card .lb{font-size:13px;font-weight:700;color:#334155}
+.qai{font-size:17px;font-weight:700;color:#fff}
+/* Sections */
+.sec-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.sec-title{display:flex;align-items:center;gap:10px}
+.sec-title .bar{width:4px;height:22px;border-radius:4px;background:#22a55b}
+.sec-title h2{margin:0;font-size:20px;font-weight:700;color:#1e293b;}
+.see-all{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:700}
+.see-all .chev{width:24px;height:24px;border-radius:999px;background:#e8f6ee;display:flex;align-items:center;justify-content:center}
+/* Subjects */
+.subjects{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+a.subj{display:block}
+.subj{border-radius:16px;overflow:hidden;background:#fff;border:1px solid #eaf0f6;cursor:pointer;box-shadow:0 1px 3px rgba(30,64,120,.05);transition:.15s}
+.subj:hover{box-shadow:0 8px 20px rgba(30,64,120,.13);transform:translateY(-2px)}
+.subj .top{padding:16px 12px 10px;text-align:center}
+.subj .name{font-size:21px;font-weight:700;margin-bottom:8px;letter-spacing:0.2px}
+.subj img{width:150px;height:146px;object-fit:contain;display:block;margin:0 auto;mix-blend-mode:multiply}
+.subj .cta{padding:13px 0;display:flex;align-items:center;justify-content:center;gap:7px;font-size:14px;font-weight:700}
+/* Collections */
+.cols{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+.col-card{background:#fff;border:1px solid #eaf0f6;border-radius:14px;padding:8px 8px 12px;cursor:pointer;box-shadow:0 1px 3px rgba(30,64,120,.05);transition:.15s}
+.col-card:hover{box-shadow:0 8px 20px rgba(30,64,120,.13);transform:translateY(-2px)}
+.col-card img{width:100%;height:106px;object-fit:cover;border-radius:9px;display:block;margin-bottom:10px}
+.col-card .nm{font-size:13.5px;font-weight:700;padding:0 4px;line-height:1.35}
+.col-card .ct{font-size:12px;font-weight:600;color:#94a3b8;padding:3px 4px 0}
+/* Recents */
+.recents{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.recent{background:#f4f8fc;border:1px solid #e7eef5;border-radius:14px;padding:14px;cursor:pointer}
+.recent:hover{background:#fff;box-shadow:0 6px 16px rgba(30,64,120,.1)}
+.recent .row{display:flex;gap:10px;align-items:flex-start;margin-bottom:10px}
+.recent .ppt{width:36px;height:36px;border-radius:9px;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:9.5px;font-weight:700;box-shadow:0 2px 6px rgba(30,64,120,.18)}
+.recent .tt{font-size:13.5px;font-weight:700;line-height:1.35}
+.recent .mt{font-size:12px;font-weight:700;color:#64748b;margin-top:3px}
+.recent .tm{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:#94a3b8}
+/* Banner */
+.banner{background:#e4f6ea;border:1px solid #d3eedd;border-radius:12px;padding:11px 18px;display:flex;align-items:center;justify-content:center;gap:9px;font-size:13.5px;color:#1e5631;font-weight:700}
+.banner b{font-weight:700}
+/* Bottom tabs */
+.tabs{position:sticky;bottom:0;max-width:1400px;margin:14px auto 0;background:#fff;border-top:1px solid #e7eef5;border-radius:22px 22px 0 0;box-shadow:0 -6px 20px rgba(30,64,120,.08);display:flex;justify-content:space-around;padding:10px 40px 12px}
+.tab{display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;color:#94a3b8;min-width:64px}
+.tab.active{color:#16a34a}
+.tab span{font-size:12px;font-weight:700}
+.m-logo{display:none;align-items:center;gap:10px}
+@media (min-width:900px){.tabs{display:none}}
+@media (max-width:899px){
+  aside{display:none}
+  .m-logo{display:flex}
+  .layout{padding:14px 14px 0;gap:0}
+  main{gap:18px}
+  .topbar{flex-wrap:wrap;gap:10px}
+  .search{order:5;flex-basis:100%}
+  .user b,.user svg{display:none}
+  .btn-pro{padding:9px 14px;font-size:13px}
+  .hero{padding:24px 20px 20px;min-height:0}
+  .hero-content{max-width:100%}
+  .hero h1{font-size:25px}
+  .hero-img{position:static;width:100%;height:auto;-webkit-mask-image:none;mask-image:none;border-radius:14px;margin-top:6px}
+  .features{gap:12px;flex-wrap:wrap}
+  .dots{position:static;transform:none;justify-content:center;margin-top:12px}
+  .quick{grid-template-columns:repeat(3,1fr);gap:10px}
+  .subjects{grid-template-columns:repeat(2,1fr);gap:12px}
+  .subj img{width:100%;height:130px}
+  .cols{grid-template-columns:repeat(2,1fr);gap:12px}
+  .recents{grid-template-columns:1fr;gap:10px}
+  .banner{flex-wrap:wrap;text-align:center;font-size:12.5px}
+  .tabs{border-radius:16px 16px 0 0;padding:8px 8px 10px}
+  .tab{min-width:0}.tab span{font-size:11px}
+}
+</style>
+</head>
+<body>
+<div class="layout">
+<aside>
+  <div class="side-card">
+    <div class="logo">
+      <svg width="36" height="36" viewBox="0 0 36 36" fill="none"><defs><linearGradient id="bxg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2fae62"/><stop offset="1" stop-color="#16a34a"/></linearGradient></defs><rect x="3" y="4" width="30" height="22" rx="3.5" fill="url(#bxg)"/><rect x="5.5" y="6.5" width="25" height="17" rx="2" fill="none" stroke="#ffffff" stroke-opacity="0.55" stroke-width="1.4"/><path d="M18 20.5v-5" stroke="#fff" stroke-width="2" stroke-linecap="round"/><path d="M18 15.5c-.2-2.8 1.8-5 4.8-5.2.2 3-1.8 5.2-4.8 5.2z" fill="#fff"/><path d="M18 17c0-2.2-1.6-4-4-4.2 0 2.4 1.6 4.1 4 4.2z" fill="#fff" fill-opacity="0.85"/><path d="M12 26l-2.5 5M24 26l2.5 5" stroke="#16a34a" stroke-width="2.2" stroke-linecap="round"/><path d="M18 26v3" stroke="#16a34a" stroke-width="2.2" stroke-linecap="round"/></svg>
+      <div><div class="logo-name">Bảng Xanh</div><div class="logo-sub">Giáo án trình chiếu PPT</div></div>
+    </div>
+    <nav>
+      <div class="nav-item active"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M10 21v-6h4v6"/></svg> Trang chủ</div>
+      <div class="nav-item"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg> Giáo án</div>
+      <div class="nav-item"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></svg> Bộ sưu tập</div>
+      <div class="nav-item"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5"/></svg> Chủ đề</div>
+      <div class="nav-item"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 20c0-3 2.5-5 5.5-5s5.5 2 5.5 5"/><circle cx="17" cy="9" r="2.4"/><path d="M16.5 15c2.5.2 4 2 4 4.5"/></svg> Lớp học</div>
+      <div class="nav-item"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.5s-7.5-4.7-9.3-9C1.3 8 3.4 4.9 6.6 4.9c2 0 3.6 1.1 5.4 3 1.8-1.9 3.4-3 5.4-3 3.2 0 5.3 3.1 3.9 6.6-1.8 4.3-9.3 9-9.3 9z"/></svg> Yêu thích</div>
+      <div class="nav-item"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="16" rx="2.5"/><path d="M8 3v4M16 3v4M3.5 10h17"/></svg> Lịch dạy</div>
+      <div class="nav-item"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v6M9.5 11.5 12 14l2.5-2.5"/></svg> Tài liệu hướng dẫn</div>
+    </nav>
+  </div>
+  <div class="pro-card">
+    <div class="card-head"><span class="ic" style="background:#22a55b"><svg width="15" height="15" viewBox="0 0 24 24" fill="#fff"><path d="M3 8l5 4 4-7 4 7 5-4-2 11H5L3 8z"/></svg></span><span class="tt" style="color:#166534">Nâng cấp Pro</span></div>
+    <div class="card-body" style="color:#446157">Truy cập kho giáo án cao cấp, không giới hạn và nhiều ưu đãi hấp dẫn.</div>
+    <button class="btn-green">Nâng cấp ngay</button>
+  </div>
+  <div class="support-card">
+    <div class="card-head"><span class="ic" style="background:#eff6ff;color:#2f6fed"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 13a8 8 0 0 1 16 0"/><rect x="3" y="13" width="4" height="6" rx="2"/><rect x="17" y="13" width="4" height="6" rx="2"/></svg></span><span class="tt" style="color:#1e293b">Trung tâm hỗ trợ</span></div>
+    <div class="card-body" style="color:#64748b">Hướng dẫn, câu hỏi thường gặp và liên hệ hỗ trợ.</div>
+    <button class="btn-outline">Xem ngay</button>
+  </div>
+  <img class="teacher" src="assets/teacher.png" alt="Cô giáo">
+</aside>
+<main>
+  <div class="m-logo">
+    <svg width="36" height="36" viewBox="0 0 36 36" fill="none"><defs><linearGradient id="bxg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2fae62"/><stop offset="1" stop-color="#16a34a"/></linearGradient></defs><rect x="3" y="4" width="30" height="22" rx="3.5" fill="url(#bxg)"/><rect x="5.5" y="6.5" width="25" height="17" rx="2" fill="none" stroke="#ffffff" stroke-opacity="0.55" stroke-width="1.4"/><path d="M18 20.5v-5" stroke="#fff" stroke-width="2" stroke-linecap="round"/><path d="M18 15.5c-.2-2.8 1.8-5 4.8-5.2.2 3-1.8 5.2-4.8 5.2z" fill="#fff"/><path d="M18 17c0-2.2-1.6-4-4-4.2 0 2.4 1.6 4.1 4 4.2z" fill="#fff" fill-opacity="0.85"/><path d="M12 26l-2.5 5M24 26l2.5 5" stroke="#16a34a" stroke-width="2.2" stroke-linecap="round"/><path d="M18 26v3" stroke="#16a34a" stroke-width="2.2" stroke-linecap="round"/></svg>
+    <div><div class="logo-name">Bảng Xanh</div><div class="logo-sub">Giáo án trình chiếu PPT</div></div>
+  </div>
+  <div class="topbar">
+    <div class="search"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span>Tìm kiếm giáo án, bài giảng, chủ đề...</span><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></div>
+    <button class="btn-pro"><svg width="15" height="15" viewBox="0 0 24 24" fill="#ffd34d"><path d="M3 8l5 4 4-7 4 7 5-4-2 11H5L3 8z"/></svg> Nâng cấp Pro</button>
+    <div class="bell"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg><span class="badge">3</span></div>
+    <div class="user"><img src="assets/avatar.png" alt=""><b>Hoàng Thị Mai</b><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></div>
+  </div>
+  <div class="hero">
+    <div class="hero-content">
+      <h1>Trợ lý giáo án <em>trình chiếu PPT</em> cho giáo viên tiểu học</h1>
+      <div class="checks">
+        <div><svg width="17" height="17" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="#22a55b"/><path d="m7.5 12.5 3 3 6-6.5" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg> Thiết kế đẹp – Dễ dùng – Bám sát chương trình GDPT mới</div>
+        <div><svg width="17" height="17" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="#22a55b"/><path d="m7.5 12.5 3 3 6-6.5" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg> Giúp thầy cô tiết kiệm thời gian, nâng cao hiệu quả giảng dạy.</div>
+      </div>
+      <button class="btn-cta">Bắt đầu ngay <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></button>
+      <div class="features">
+        <div class="feature"><span class="ic" style="background:linear-gradient(135deg,#8b5cf6,#6366f1)"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="m8.5 12.5 2.5 2.5 4.5-5"/></svg></span><span class="lb">Chuẩn chương trình GDPT 2018</span></div>
+        <div class="feature"><span class="ic" style="background:linear-gradient(135deg,#22c55e,#16a34a)"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19 9a2.4 2.4 0 0 0-3.4-3.4L4.5 16.7 4 20z"/></svg></span><span class="lb">Dễ chỉnh sửa linh hoạt</span></div>
+        <div class="feature"><span class="ic" style="background:linear-gradient(135deg,#94a3b8,#64748b)"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5v4.5l3 2"/></svg></span><span class="lb">Tiết kiệm thời gian hiệu quả</span></div>
+      </div>
+    </div>
+    <img class="hero-img" src="assets/hero.png" alt="">
+    <div class="dots"><span class="on"></span><span></span><span></span></div>
+  </div>
+  <div class="quick">
+    <div class="quick-card"><span class="ic" style="background:linear-gradient(135deg,#60a5fa,#4f7df5)"><span class="qai">AI</span></span><span class="lb">Trợ lý AI</span></div>
+    <div class="quick-card"><span class="ic" style="background:linear-gradient(135deg,#34d399,#16a34a)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="16" rx="2.5"/><path d="M8 3v4M16 3v4M3.5 10h17M8 14h.01M12 14h.01M16 14h.01M8 17.5h.01M12 17.5h.01"/></svg></span><span class="lb">Lịch báo giảng</span></div>
+    <div class="quick-card"><span class="ic" style="background:linear-gradient(135deg,#fbbf24,#f59e0b)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></svg></span><span class="lb">Kho bài giảng</span></div>
+    <div class="quick-card"><span class="ic" style="background:linear-gradient(135deg,#f472b6,#ec4899)"><svg width="22" height="22" viewBox="0 0 24 24" fill="#fff"><path d="M12 20.5s-7.5-4.7-9.3-9C1.3 8 3.4 4.9 6.6 4.9c2 0 3.6 1.1 5.4 3 1.8-1.9 3.4-3 5.4-3 3.2 0 5.3 3.1 3.9 6.6-1.8 4.3-9.3 9-9.3 9z"/></svg></span><span class="lb">Yêu thích</span></div>
+    <div class="quick-card"><span class="ic" style="background:linear-gradient(135deg,#38bdf8,#2563eb)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18a5 5 0 0 1-.9-9.9A6 6 0 0 1 17.8 9 4.5 4.5 0 0 1 17 18h-2"/><path d="M12 13v7M9.5 15.5 12 13l2.5 2.5"/></svg></span><span class="lb">Tải lên</span></div>
+    <div class="quick-card"><span class="ic" style="background:linear-gradient(135deg,#a78bfa,#7c3aed)"><svg width="22" height="22" viewBox="0 0 24 24" fill="#fff"><rect x="4" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5"/></svg></span><span class="lb">Xem tất cả</span></div>
+  </div>
+  <section>
+    <div class="sec-head"><div class="sec-title"><span class="bar"></span><h2>Giáo án theo môn học</h2></div><a href="#" class="see-all">Xem tất cả <span class="chev"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></span></a></div>
+    <div class="subjects">
+      <a class="subj" href="mon.html?mon=toan"><div class="top" style="background:linear-gradient(180deg,#eaf3fe,#dceafc)"><div class="name" style="color:#2563eb">Toán</div><img src="assets/subj-toan.png" alt="Toán"></div><div class="cta" style="color:#2563eb">Khám phá ngay <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15"/><path d="m13 6 6 6-6 6"/></svg></div></a>
+      <a class="subj" href="mon.html?mon=tviet"><div class="top" style="background:linear-gradient(180deg,#ecf9ef,#e0f4e6)"><div class="name" style="color:#16a34a">Tiếng Việt</div><img src="assets/subj-tviet.png" alt="Tiếng Việt"></div><div class="cta" style="color:#16a34a">Khám phá ngay <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15"/><path d="m13 6 6 6-6 6"/></svg></div></a>
+      <a class="subj" href="mon.html?mon=tanh"><div class="top" style="background:linear-gradient(180deg,#fdeef5,#fbe2ee)"><div class="name" style="color:#db2777">Tiếng Anh</div><img src="assets/subj-tanh.png" alt="Tiếng Anh"></div><div class="cta" style="color:#db2777">Khám phá ngay <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15"/><path d="m13 6 6 6-6 6"/></svg></div></a>
+      <a class="subj" href="mon.html?mon=tinhoc"><div class="top" style="background:linear-gradient(180deg,#fef3e8,#fdeada)"><div class="name" style="color:#ea580c">Tin học</div><img src="assets/subj-tinhoc.png" alt="Tin học"></div><div class="cta" style="color:#ea580c">Khám phá ngay <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15"/><path d="m13 6 6 6-6 6"/></svg></div></a>
+    </div>
+  </section>
+  <section>
+    <div class="sec-head"><div class="sec-title"><span class="bar"></span><h2>Bộ sưu tập nổi bật</h2></div><a href="#" class="see-all">Xem tất cả <span class="chev"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></span></a></div>
+    <div class="cols">
+      <div class="col-card"><img src="assets/col-1.png" alt="Bài giảng tương tác"><div class="nm">Bài giảng tương tác</div><div class="ct">128 giáo án</div></div>
+      <div class="col-card"><img src="assets/col-2.png" alt="Bài giảng STEM"><div class="nm">Bài giảng STEM</div><div class="ct">95 giáo án</div></div>
+      <div class="col-card"><img src="assets/col-3.png" alt="Bài giảng theo chủ đề"><div class="nm">Bài giảng theo chủ đề</div><div class="ct">152 giáo án</div></div>
+      <div class="col-card"><img src="assets/col-4.png" alt="Hoạt động trải nghiệm"><div class="nm">Hoạt động trải nghiệm</div><div class="ct">88 giáo án</div></div>
+      <div class="col-card"><img src="assets/col-5.png" alt="Kỹ năng sống"><div class="nm">Kỹ năng sống</div><div class="ct">76 giáo án</div></div>
+    </div>
+  </section>
+  <section>
+    <div class="sec-head"><div class="sec-title"><span class="bar"></span><h2>Giáo án sử dụng gần đây</h2></div><a href="#" class="see-all">Xem tất cả <span class="chev"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></span></a></div>
+    <div class="recents">
+      <div class="recent"><div class="row"><span class="ppt" style="background:linear-gradient(135deg,#3b82f6,#2563eb)">PPT</span><div><div class="tt">Bài 32: Luyện tập (chung)</div><div class="mt">Toán 3  ·  Tiết 2</div></div></div><div class="tm"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg> 1 giờ trước</div></div>
+      <div class="recent"><div class="row"><span class="ppt" style="background:linear-gradient(135deg,#34d399,#16a34a)">PPT</span><div><div class="tt">Bài 15: Mái ấm gia đình</div><div class="mt">Tiếng Việt 2  ·  Tiết 1</div></div></div><div class="tm"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg> Hôm qua</div></div>
+      <div class="recent"><div class="row"><span class="ppt" style="background:linear-gradient(135deg,#f472b6,#e11d48)">PPT</span><div><div class="tt">Unit 4: My home</div><div class="mt">Tiếng Anh 3  ·  Lesson 1</div></div></div><div class="tm"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg> 2 ngày trước</div></div>
+      <div class="recent"><div class="row"><span class="ppt" style="background:linear-gradient(135deg,#fb923c,#ea580c)">PPT</span><div><div class="tt">Bài 2: Làm quen với máy tính</div><div class="mt">Tin học 3  ·  Tiết 1</div></div></div><div class="tm"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg> 3 ngày trước</div></div>
+    </div>
+  </section>
+  <div class="banner">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6s2-2 6-2 6 2 6 2v14s-2-2-6-2-6 2-6 2V6z"/></svg>
+    <span>Chỉ 1 bộ sách: <b>Kết nối tri thức với cuộc sống</b> – Đồng hành cùng thầy cô trên mọi tiết dạy.</span>
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="#22a55b"><path d="M12 22c-2-8 2-16 10-18-1 9-4 16-10 18z"/><path d="M12 22c0-6-4-11-9-12 2 7 5 11 9 12z" fill="#5bc17f"/></svg>
+  </div>
+</main>
+</div>
+<div class="tabs">
+  <div class="tab active"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M10 21v-6h4v6"/></svg><span>Trang chủ</span></div>
+  <div class="tab"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span>Tìm kiếm</span></div>
+  <div class="tab"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 20c0-3 2.5-5 5.5-5s5.5 2 5.5 5"/><circle cx="17" cy="9" r="2.4"/><path d="M16.5 15c2.5.2 4 2 4 4.5"/></svg><span>Lớp học của tôi</span></div>
+  <div class="tab"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.5s-7.5-4.7-9.3-9C1.3 8 3.4 4.9 6.6 4.9c2 0 3.6 1.1 5.4 3 1.8-1.9 3.4-3 5.4-3 3.2 0 5.3 3.1 3.9 6.6-1.8 4.3-9.3 9-9.3 9z"/></svg><span>Yêu thích</span></div>
+  <div class="tab"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4.5 21c0-4 3.5-6.5 7.5-6.5s7.5 2.5 7.5 6.5"/></svg><span>Tài khoản</span></div>
+</div>
+</body>
+</html>

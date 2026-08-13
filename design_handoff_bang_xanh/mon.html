@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chọn khối lớp – Bảng Xanh</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.cdnfonts.com/css/utm-avo" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#eef4fa;font-family:'UTM Avo','Nunito',sans-serif;-webkit-font-smoothing:antialiased;color:#1e293b}
+a{text-decoration:none;color:inherit}
+.wrap{max-width:1100px;margin:0 auto;padding:20px 24px 60px}
+.top{display:flex;align-items:center;gap:12px;margin-bottom:26px}
+.back{display:flex;align-items:center;gap:7px;background:#fff;border:1px solid #e2e8f0;border-radius:999px;padding:9px 18px;font-weight:700;font-size:14px;color:#334155}
+.back:hover{border-color:#16a34a;color:#16a34a}
+.crumb{font-size:14px;font-weight:700;color:#94a3b8}
+.crumb b{color:#1e293b;}
+.hero{display:flex;align-items:center;gap:22px;border-radius:20px;padding:26px 34px;margin-bottom:30px}
+.hero img.mascot{width:92px;height:96px;object-fit:contain}
+.hero h1{margin:0 0 6px;font-size:30px;font-weight:700;letter-spacing:-.3px}
+.hero p{margin:0;font-size:14.5px;font-weight:700;color:#475569}
+.grades{display:grid;grid-template-columns:repeat(5,1fr);gap:16px}
+.grade{background:#fff;border:1px solid #eaf0f6;border-radius:18px;padding:26px 12px 20px;text-align:center;cursor:pointer;box-shadow:0 1px 3px rgba(30,64,120,.05);transition:.15s;display:block}
+.grade:hover{box-shadow:0 10px 24px rgba(30,64,120,.14);transform:translateY(-3px)}
+.grade .num{width:74px;height:74px;border-radius:22px;margin:0 auto 14px;display:flex;align-items:center;justify-content:center;font-size:34px;font-weight:700;color:#fff;box-shadow:0 6px 14px rgba(30,64,120,.18)}
+.grade .lb{font-size:17px;font-weight:700;}
+.grade .sub{font-size:12.5px;font-weight:700;color:#94a3b8;margin-top:4px}
+@media (max-width:899px){
+  .grades{grid-template-columns:repeat(2,1fr);gap:12px}
+  .hero{flex-direction:column;text-align:center;padding:22px 18px}
+  .hero h1{font-size:24px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <a class="back" href="index.html"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m15 6-6 6 6 6"/></svg> Trang chủ</a>
+    <div class="crumb">Trang chủ / <b id="crumb-mon">Môn học</b></div>
+  </div>
+  <div class="hero" id="hero">
+    <img class="mascot" src="assets/mascot.png" alt="Linh vật">
+    <div>
+      <h1 id="title">Chọn khối lớp</h1>
+      <p>Chọn khối lớp để xem giáo án 35 tuần theo chương trình GDPT 2018.</p>
+    </div>
+  </div>
+  <div class="grades" id="grades"></div>
+</div>
+<script src="links.js"></script>
+<script>
+const mon = new URLSearchParams(location.search).get('mon') || 'toan';
+const S = window.SUBJECTS[mon] || window.SUBJECTS.toan;
+document.title = 'Môn ' + S.name + ' – Chọn khối lớp – Bảng Xanh';
+document.getElementById('crumb-mon').textContent = 'Môn ' + S.name;
+const h = document.getElementById('hero');
+h.style.background = S.bg;
+const t = document.getElementById('title');
+t.textContent = 'Môn ' + S.name + ' – Chọn khối lớp';
+t.style.color = S.color;
+const grades = document.getElementById('grades');
+for (let i = 1; i <= 5; i++) {
+  const n = Object.values((window.DRIVE_LINKS[mon] || {})[i] || {}).filter(Boolean).length;
+  const a = document.createElement('a');
+  a.className = 'grade';
+  a.href = 'tuan.html?mon=' + mon + '&lop=' + i;
+  a.innerHTML = '<div class="num" style="background:linear-gradient(135deg,' + S.color + 'cc,' + S.color + ')">' + i + '</div>' +
+    '<div class="lb" style="color:' + S.color + '">Lớp ' + i + '</div>' +
+    '<div class="sub">35 tuần · ' + (n ? n + ' tuần có bài' : 'GDPT 2018') + '</div>';
+  grades.appendChild(a);
+}
+</script>
+</body>
+</html>
