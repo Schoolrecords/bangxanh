@@ -1,0 +1,21 @@
+{
+  "name": "Bảng Xanh — Giáo án trình chiếu PPT",
+  "short_name": "Bảng Xanh",
+  "description": "Kho bài giảng trình chiếu PPT tiểu học theo môn, lớp và 35 tuần học, mở thẳng từ Google Drive.",
+  "lang": "vi",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#eef4fa",
+  "theme_color": "#16a34a",
+  "icons": [
+    { "src": "assets/img/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "assets/img/icon-maskable.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Kho giáo án",     "url": "./#/giao-an" },
+    { "name": "Lịch báo giảng",  "url": "./#/lich-day" },
+    { "name": "Yêu thích",       "url": "./#/yeu-thich" }
+  ]
+}

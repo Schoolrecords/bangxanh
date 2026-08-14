@@ -205,6 +205,87 @@ const Kho = {
   }
 };
 
+/* ===================== Tuần hiện tại của năm học =====================
+   Tính từ ngày khai giảng trong data.js. Tuần luôn bắt đầu vào thứ Hai.
+   Trả về 0 khi chưa tới năm học hoặc đã qua tuần cuối.                */
+const NH = D.namHoc || {};
+const NGAY = 86400000;
+const ngay = s => { const d = new Date(String(s) + "T00:00:00"); return isNaN(d.getTime()) ? null : d; };
+const homNay = () => { const d = new Date(); d.setHours(0,0,0,0); return d; };
+
+function thuHaiDauNam(){
+  const d = ngay(NH.khaiGiang); if (!d) return null;
+  d.setDate(d.getDate() - ((d.getDay() + 6) % 7));   // lùi về thứ Hai
+  return d;
+}
+/* Tuần bắt đầu bằng thứ Hai này có rơi vào kỳ nghỉ không? */
+function laTuanNghi(thuHai){
+  const cuoi = new Date(thuHai); cuoi.setDate(thuHai.getDate() + 6);
+  return (NH.nghi || []).some(k => {
+    const a = ngay(k.tu), b = ngay(k.den);
+    return a && b && a <= cuoi && b >= thuHai;       // hai khoảng có giao nhau
+  });
+}
+/* Duyệt từng tuần từ đầu năm học, bỏ qua tuần nghỉ.
+   ham(soTuanDay, thuHai) trả về true thì dừng.                      */
+function duyetTuan(ham){
+  const d0 = thuHaiDauNam(); if (!d0) return;
+  let n = 0;
+  for (let i = 0; i < 100 && n < SO_TUAN; i++){
+    const dau = new Date(d0); dau.setDate(d0.getDate() + i * 7);
+    if (laTuanNghi(dau)) continue;
+    if (ham(++n, dau)) return;
+  }
+}
+/* Khoảng ngày của tuần dạy thứ n */
+function mocTuan(n){
+  let kq = null;
+  duyetTuan((so, dau) => {
+    if (so !== n) return false;
+    const cuoi = new Date(dau); cuoi.setDate(dau.getDate() + 6);
+    kq = { dau:dau, cuoi:cuoi }; return true;
+  });
+  return kq;
+}
+function tuanHienTai(){
+  const nay = homNay(); let kq = 0;
+  duyetTuan((so, dau) => {
+    const cuoi = new Date(dau); cuoi.setDate(dau.getDate() + 6);
+    if (nay >= dau && nay <= cuoi){ kq = so; return true; }
+    return false;
+  });
+  return kq;
+}
+const TUAN_NAY = tuanHienTai();
+
+/* Câu mô tả trạng thái năm học, dùng cho thẻ "Tuần này" ngoài trang chủ */
+function trangThaiNamHoc(){
+  const d0 = thuHaiDauNam();
+  if (!d0) return { tuan:0, nhan:"Chưa đặt ngày khai giảng",
+                    mo:"Mở file assets/js/data.js, mục namHoc để đặt ngày khai giảng." };
+  const dd = x => x.toLocaleDateString("vi-VN", { day:"2-digit", month:"2-digit" });
+
+  if (TUAN_NAY){
+    const mt = mocTuan(TUAN_NAY);
+    return { tuan:TUAN_NAY, nhan:"Tuần " + TUAN_NAY,
+             mo:"Từ " + dd(mt.dau) + " đến " + dd(mt.cuoi) + " · năm học " + (NH.ten || "") };
+  }
+
+  const nay = homNay();
+  if (nay < d0){
+    const con = Math.ceil((d0 - nay) / NGAY);
+    return { tuan:0, nhan:"Chưa vào năm học",
+             mo:"Còn " + con + " ngày nữa tới tuần đầu của năm học " + (NH.ten || "") + "." };
+  }
+  /* Đang trong kỳ nghỉ giữa năm học */
+  const k = (NH.nghi || []).find(x => { const a = ngay(x.tu), b = ngay(x.den); return a && b && nay >= a && nay <= b; });
+  if (k) return { tuan:0, nhan:k.ten || "Đang nghỉ",
+                  mo:"Từ " + dd(ngay(k.tu)) + " đến " + dd(ngay(k.den)) + ". Hết nghỉ app sẽ tự nhảy sang tuần kế tiếp." };
+
+  return { tuan:0, nhan:"Đã hết " + SO_TUAN + " tuần",
+           mo:"Năm học " + (NH.ten || "") + " đã xong. Cập nhật ngày khai giảng năm mới trong file data.js." };
+}
+
 function moTaThoiGian(ts){
   if (!ts) return "";
   const p = Math.floor((Date.now() - ts) / 60000);
@@ -300,15 +381,68 @@ function crumb(items){
     (i ? ic("chevron",13) : "") + (it.href ? '<a href="' + it.href + '">' + esc(it.ten) + '</a>' : '<b>' + esc(it.ten) + '</b>')
   ).join("") + '</div>';
 }
-function theMon(m, href, nhan){
-  const n = Kho.dem({ mon:m.id });
+/* Thẻ môn học. Truyền lop để đếm và đo tiến độ riêng của khối lớp đó. */
+function theMon(m, href, nhan, lop){
+  const n    = lop ? Kho.dem({ mon:m.id, lop:lop }) : Kho.dem({ mon:m.id });
+  const tong = (lop ? 1 : m.lop.length) * SO_TUAN;
+  const pct  = tong ? Math.round(n * 100 / tong) : 0;
   return '<a class="subj" href="' + (href || "#/mon/" + m.id) + '">' +
     '<div class="top" style="background:' + m.nen + '">' +
-      (n ? '<span class="cnt">' + n + ' bài</span>' : '') +
+      (n ? '<span class="cnt">' + n + '/' + tong + ' tuần</span>' : '') +
       '<div class="name" style="color:' + m.mau + '">' + esc(m.ten) + '</div>' +
       '<img src="' + anh(m.img) + '" alt="' + esc(m.ten) + '" loading="lazy">' +
     '</div>' +
-    '<div class="cta" style="color:' + m.mau + '">' + esc(nhan || "Khám phá ngay") + ' ' + ic("arrow",15) + '</div>' +
+    '<div class="foot">' +
+      '<span class="prog"><i style="width:' + pct + '%;background:' + m.grad + '"></i></span>' +
+      '<div class="cta" style="color:' + m.mau + '"><span>' + esc(nhan || "Khám phá ngay") + '</span>' +
+      '<span class="go">' + ic("arrow",15) + '</span></div>' +
+    '</div>' +
+  '</a>';
+}
+
+/* Thanh tiến độ nhỏ dùng chung */
+function thanhTienDo(co, tong, grad){
+  const pct = tong ? Math.round(co * 100 / tong) : 0;
+  return '<span class="prog"><i style="width:' + pct + '%;background:' + grad + '"></i></span>';
+}
+
+/* Nút quay lại + đường dẫn cho trang môn / trang lớp */
+function navPhu(back, items){
+  return '<div class="sub-nav">' +
+    '<a class="back" href="' + back.href + '">' + ic("back",15) + ' ' + esc(back.ten) + '</a>' +
+    crumb(items) + '</div>';
+}
+
+/* Hero đầu trang môn học / khối lớp
+   o = { nen, mau, grad, img | so, eyebrow, ten, mo, stats:[{b,s}], co, tong, sm } */
+function heroLon(o){
+  const pct = o.tong ? Math.round(o.co * 100 / o.tong) : 0;
+  return '<div class="subj-hero' + (o.sm ? " sm" : "") + '" style="background:' + o.nen + '">' +
+    '<div class="art">' + (o.img
+      ? '<img src="' + anh(o.img) + '" alt="" loading="lazy">'
+      : '<span class="n" style="color:' + o.mau + '">' + esc(o.so) + '</span>') + '</div>' +
+    '<div class="txt">' +
+      (o.eyebrow ? '<span class="eyebrow" style="color:' + o.mau + '">' + esc(o.eyebrow) + '</span>' : '') +
+      '<h1 style="color:' + o.mau + '">' + esc(o.ten) + '</h1>' +
+      (o.mo ? '<p>' + esc(o.mo) + '</p>' : '') +
+      (o.stats && o.stats.length ? '<div class="hero-stats">' + o.stats.map(s =>
+        '<div class="hstat"><b style="color:' + o.mau + '">' + esc(s.b) + '</b><span>' + esc(s.s) + '</span></div>'
+      ).join("") + '</div>' : '') +
+      (o.tong ? '<div class="hero-prog"><div class="lbrow"><span>Tiến độ giáo án</span>' +
+        '<span style="color:' + o.mau + '">' + o.co + '/' + o.tong + ' tuần · ' + pct + '%</span></div>' +
+        thanhTienDo(o.co, o.tong, o.grad) + '</div>' : '') +
+    '</div></div>';
+}
+
+/* Thẻ chọn khối lớp — o = { href, so, ten, phu, mau, grad, co, tong } */
+function theLop(o){
+  return '<a class="grade" href="' + o.href + '" style="--mau:' + o.mau + '">' +
+    '<span class="go">' + ic("arrow",15) + '</span>' +
+    '<span class="num" style="background:' + o.grad + '">' + esc(o.so) + '</span>' +
+    '<span class="lb" style="color:' + o.mau + '">' + esc(o.ten) + '</span>' +
+    '<span class="sub">' + esc(o.phu) + '</span>' +
+    thanhTienDo(o.co, o.tong, o.grad) +
+    '<span class="pct">' + (o.co ? o.co + '/' + o.tong + ' tuần đã có bài' : 'Chưa gắn bài giảng') + '</span>' +
   '</a>';
 }
 function theTap(t){
@@ -319,24 +453,25 @@ function theTap(t){
     '<div class="ct">' + (n ? n + " giáo án" : "Chưa gắn nhãn") + '</div></a>';
 }
 
-/* Ô TUẦN kiểu bản thiết kế tuan.html (dùng trong trang 35 tuần) */
+/* Ô TUẦN dùng trong trang 35 tuần */
 function oTuan(o){
   const m = DB.mon(o.mon), fav = S.fav.indexOf(o.k) >= 0;
+  const nay = o.tuan === TUAN_NAY;
   const tools = '<div class="w-tools' + (fav ? " show" : "") + '">' +
       (o.link ? '<button class="w-btn" data-preview="' + o.k + '" title="Xem trước trong app">' + ic("eye",13) + '</button>' : '') +
       '<button class="w-btn' + (fav ? " on" : "") + '" data-fav="' + o.k + '" title="Ghim vào Yêu thích">' + icf("heart",13) + '</button>' +
     '</div>';
   const than =
-    '<div class="num" style="background:' + m.grad + '">' + o.tuan + '</div>' +
-    '<div class="lb" style="color:' + m.mau + '">Tuần ' + o.tuan + '</div>' +
+    (nay ? '<span class="nhan-nay">Tuần này</span>' : '') +
+    '<div class="num" style="background:' + (o.link ? m.grad : "#e8eef6") + (o.link ? "" : ";color:#94a3b8") + '">' + o.tuan + '</div>' +
+    '<div class="lb" style="color:' + (o.link ? m.mau : "#64748b") + '">Tuần ' + o.tuan + '</div>' +
     '<div class="st"><span class="dot"></span>' + (o.link ? "Mở Drive" : "Sắp có") + '</div>' +
     (o.ten ? '<div class="tenbai">' + esc(o.ten) + '</div>' : '');
+  const boc = (n, ben) => '<div class="w-item ' + n + (nay ? " nay" : "") + '" id="tuan-' + o.tuan + '"' +
+    (nay ? ' style="--mau:' + m.mau + '"' : '') + '>' + ben + tools + '</div>';
   if (o.link)
-    return '<div style="position:relative">' +
-      '<a class="week has" href="' + esc(Drive.mo(o.link)) + '" target="_blank" rel="noopener" data-open="' + o.k + '">' + than + '</a>' +
-      tools + '</div>';
-  return '<div style="position:relative">' +
-    '<button class="week none" data-gan="' + o.k + '" title="Gắn link Google Drive">' + than + '</button>' + tools + '</div>';
+    return boc("has", '<a class="week has" href="' + esc(Drive.mo(o.link)) + '" target="_blank" rel="noopener" data-open="' + o.k + '">' + than + '</a>');
+  return boc("none", '<button class="week none" data-gan="' + o.k + '" title="Gắn link Google Drive">' + than + '</button>');
 }
 
 /* Thẻ bài giảng có ghi tên môn (Yêu thích, Tìm kiếm, Tuần học, Bộ sưu tập) */
@@ -408,6 +543,24 @@ function heroHTML(){
 }
 const veLaiHero = () => { const h = $("#hero"); if (h) h.innerHTML = heroHTML(); return !!h; };
 
+/* Dải "Tuần này" ngoài trang chủ — cho biết đang ở tuần thứ mấy của năm học
+   và mở thẳng danh sách bài giảng của tuần đó.                            */
+function theTuanNay(){
+  const tt = trangThaiNamHoc();
+  const n  = tt.tuan ? Kho.dem({ tuan:tt.tuan }) : 0;
+  return '<div class="tuannay' + (tt.tuan ? "" : " mo") + '">' +
+    '<span class="so">' + (tt.tuan || ic("calendar",26)) + '</span>' +
+    '<div class="txt"><h3>' + esc(tt.nhan) + '</h3><p>' + esc(tt.mo) + '</p></div>' +
+    (tt.tuan
+      ? '<div class="row-btn">' +
+          '<a class="btn-green" style="width:auto" href="#/tuan-hoc/' + tt.tuan + '">' + ic("grid",15) +
+          ' Xem ' + (n ? n + " bài giảng" : "tuần " + tt.tuan) + '</a>' +
+          '<a class="btn-pill" href="#/lich-day">' + ic("calendar",15) + ' Lịch báo giảng</a>' +
+        '</div>'
+      : '<a class="btn-pill" href="#/huong-dan">' + ic("help",15) + ' Hướng dẫn</a>') +
+  '</div>';
+}
+
 Trang["/"] = function(){
   const recent = S.recent.map(r => { const p = tachK(r.k); const o = Kho.o(p.mon,p.lop,p.tuan); o._ts = r.ts; return o; })
                          .filter(o => o.link).slice(0,4);
@@ -428,6 +581,8 @@ Trang["/"] = function(){
     '<a class="quick-card" href="' + q.h + '"><span class="ic" style="background:' + q.bg + '">' +
     (q.ai ? '<span class="qai">AI</span>' : q.f ? icf(q.f,22) : ic(q.i,22)) +
     '</span><span class="lb">' + esc(q.t) + '</span></a>').join("") + '</div>' +
+
+  theTuanNay() +
 
   '<section>' + secHead("Giáo án theo môn học", "#/giao-an") +
     '<div class="subjects">' + DB.dsMon().slice(0,4).map(m => theMon(m)).join("") + '</div></section>' +
@@ -462,55 +617,88 @@ Trang["/giao-an"] = function(){
     '<div class="subjects">' + DB.dsMon().map(m => theMon(m)).join("") + '</div>';
 };
 
-/* ============ TRANG MÔN HỌC — theo mon.html của bản thiết kế ============ */
+/* ====================== TRANG MÔN HỌC — CHỌN KHỐI LỚP ====================== */
 Trang["/mon"] = function(r){
   const m = DB.mon0(r.seg[1]);
   if (!m) return hopTrong("Không tìm thấy môn học", "Môn học này không có trong danh sách.");
   if (r.seg[2]) return trangTuan(m, Number(r.seg[2]), r);
 
+  const tongO = m.lop.length * SO_TUAN;
+  const co    = Kho.dem({ mon:m.id });
+  const thieu = [1,2,3,4,5].filter(l => m.lop.indexOf(l) < 0);
+
   return '' +
-  '<div class="solo-top">' +
-    '<a class="back" href="#/">' + ic("back",15) + ' Trang chủ</a>' +
-    '<a class="back" href="#/giao-an">' + ic("grid",15) + ' Môn khác</a>' +
-    '<div class="solo-crumb">Trang chủ / <b>Môn ' + esc(m.ten) + '</b></div>' +
-  '</div>' +
-  '<div class="solo-hero" style="background:' + m.nen + '">' +
-    '<img class="mascot" src="' + anh("mascot.png") + '" alt="Linh vật">' +
-    '<div><h1 style="color:' + m.mau + '">Môn ' + esc(m.ten) + ' – Chọn khối lớp</h1>' +
-    '<p>Chọn khối lớp để xem giáo án ' + SO_TUAN + ' tuần theo chương trình GDPT 2018.</p></div>' +
-  '</div>' +
-  '<div class="grades">' + m.lop.map(l => {
-    const n = Kho.dem({ mon:m.id, lop:l });
-    return '<a class="grade" href="#/mon/' + m.id + '/' + l + '">' +
-      '<div class="num" style="background:' + m.grad + '">' + l + '</div>' +
-      '<div class="lb" style="color:' + m.mau + '">Lớp ' + l + '</div>' +
-      '<div class="sub">' + SO_TUAN + ' tuần · ' + (n ? n + " tuần có bài" : "GDPT 2018") + '</div></a>';
-  }).join("") + '</div>';
+  navPhu({ href:"#/giao-an", ten:"Môn khác" },
+         [{ten:"Trang chủ",href:"#/"},{ten:"Kho giáo án",href:"#/giao-an"},{ten:"Môn " + m.ten}]) +
+
+  heroLon({
+    nen:m.nen, mau:m.mau, grad:m.grad, img:m.img,
+    eyebrow:"Môn học", ten:m.ten,
+    mo:"Chọn khối lớp để mở giáo án " + SO_TUAN + " tuần, bám sát chương trình GDPT 2018." +
+       (thieu.length ? " Môn này chỉ dạy ở khối " + m.lop.join(", ") + "." : ""),
+    stats:[
+      { b:m.lop.length, s:"khối lớp" },
+      { b:SO_TUAN,      s:"tuần mỗi lớp" },
+      { b:co,           s:"tuần đã có bài" }
+    ],
+    co:co, tong:tongO
+  }) +
+
+  '<section>' + secHead("Chọn khối lớp") +
+    '<div class="grades">' + m.lop.map(l => theLop({
+      href:"#/mon/" + m.id + "/" + l,
+      so:l, ten:"Lớp " + l, phu:m.ten + " · " + SO_TUAN + " tuần",
+      mau:m.mau, grad:m.grad,
+      co:Kho.dem({ mon:m.id, lop:l }), tong:SO_TUAN
+    })).join("") + '</div></section>' +
+
+  (co === 0
+    ? '<div class="banner warn">' + ic("link",16) + '<span>Môn <b>' + esc(m.ten) + '</b> chưa có link nào. ' +
+      'Mở file <b>assets/js/links.js</b>, tìm mã môn <b>' + esc(m.id) + '</b> rồi dán link vào đúng lớp – tuần. ' +
+      '<a href="#/huong-dan">Xem hướng dẫn</a></span></div>'
+    : '');
 };
 
-/* ============ TRANG 35 TUẦN — theo tuan.html của bản thiết kế ============ */
+/* ==================== TRANG 35 TUẦN CỦA MỘT KHỐI LỚP ==================== */
 function trangTuan(m, lop, r){
   const ds = Kho.dsTuan(m.id, lop);
   const co = ds.filter(o => o.link).length;
   const hk = D.hocKy || [{ten:"Học kì 1",tu:1,den:18},{ten:"Học kì 2",tu:19,den:35}];
+  const demHK = k => ds.filter(o => o.tuan >= k.tu && o.tuan <= k.den && o.link).length;
 
   return '' +
-  '<div class="solo-top">' +
-    '<a class="back" href="#/">' + ic("home",15) + ' Trang chủ</a>' +
-    '<a class="back" href="#/mon/' + m.id + '">' + ic("back",15) + ' Chọn lớp khác</a>' +
-    '<div class="solo-crumb">Trang chủ / <b>Môn ' + esc(m.ten) + '</b> / <b>Lớp ' + lop + '</b></div>' +
+  navPhu({ href:"#/mon/" + m.id, ten:"Chọn lớp khác" },
+         [{ten:"Kho giáo án",href:"#/giao-an"},
+          {ten:"Môn " + m.ten,href:"#/mon/" + m.id},
+          {ten:"Lớp " + lop}]) +
+
+  heroLon({
+    sm:true, nen:m.nen, mau:m.mau, grad:m.grad, img:m.img,
+    eyebrow:"Lớp " + lop, ten:m.ten + " lớp " + lop,
+    mo:"Bấm vào ô tuần để mở giáo án trên Google Drive. Ô có chấm xanh là đã có bài; " +
+       "rê chuột vào ô để xem trước hoặc ghim vào Yêu thích.",
+    stats:hk.map(k => ({ b:demHK(k) + "/" + (k.den - k.tu + 1), s:k.ten })),
+    co:co, tong:SO_TUAN
+  }) +
+
+  '<div class="week-bar">' +
+    '<div class="chips">' +
+      '<button class="chip on" data-loc="tat-ca">Tất cả ' + SO_TUAN + ' tuần</button>' +
+      '<button class="chip" data-loc="co">' + ic("check",14) + ' Đã có bài (' + co + ')</button>' +
+      '<button class="chip" data-loc="chua">' + ic("plus",14) + ' Chưa có (' + (SO_TUAN - co) + ')</button>' +
+    '</div>' +
+    (TUAN_NAY ? '<button class="chip nhay" data-nhay="' + TUAN_NAY + '">' +
+                ic("calendar",14) + ' Tới tuần ' + TUAN_NAY + ' (tuần này)</button>' : '') +
   '</div>' +
-  '<div class="solo-hero sm" style="background:' + m.nen + '">' +
-    '<img class="mascot" src="' + anh("mascot.png") + '" alt="Linh vật">' +
-    '<div><h1 style="color:' + m.mau + '">' + esc(m.ten) + ' lớp ' + lop + ' – Giáo án ' + SO_TUAN + ' tuần</h1>' +
-    '<p>Bấm vào tuần để mở giáo án trên Google Drive. Tuần có chấm xanh là đã có bài. ' +
-    '<b style="color:' + m.mau + '">Đã có ' + co + '/' + SO_TUAN + ' tuần.</b></p></div>' +
-  '</div>' +
+
+  '<div class="tuan-wrap" id="tuanWrap" data-che-do="tat-ca">' +
   hk.map(k =>
-    '<div class="hk"><span class="bar"></span><h2 style="color:' + m.mau + '">' + esc(k.ten) + '</h2>' +
-    '<span class="ct">Tuần ' + k.tu + '–' + k.den + '</span></div>' +
-    '<div class="weeks">' + ds.filter(o => o.tuan >= k.tu && o.tuan <= k.den).map(oTuan).join("") + '</div>'
-  ).join("");
+    '<section><div class="hk"><span class="bar" style="background:' + m.mau + '"></span>' +
+    '<h2 style="color:' + m.mau + '">' + esc(k.ten) + '</h2>' +
+    '<span class="ct">Tuần ' + k.tu + '–' + k.den + ' · đã có ' + demHK(k) + ' tuần</span></div>' +
+    '<div class="weeks">' + ds.filter(o => o.tuan >= k.tu && o.tuan <= k.den).map(oTuan).join("") + '</div>' +
+    '<p class="trong-loc">Không có tuần nào khớp bộ lọc ở học kì này.</p></section>'
+  ).join("") + '</div>';
 }
 
 /* ------------------------------ BỘ SƯU TẬP ------------------------------ */
@@ -536,39 +724,73 @@ Trang["/tuan-hoc"] = function(r){
     let html = "";
     for (let t = 1; t <= SO_TUAN; t++){
       const c = Kho.dem({tuan:t});
-      html += '<a class="wi' + (c?" has":"") + '" href="#/tuan-hoc/' + t + '"><b>' + t + '</b>' +
-              '<small>' + (c ? c + " bài" : "trống") + '</small></a>';
+      html += '<a class="wi' + (c?" has":"") + (t===TUAN_NAY?" nay":"") + '" href="#/tuan-hoc/' + t + '">' +
+              '<b>' + t + '</b><small>' + (t===TUAN_NAY ? "tuần này" : c ? c + " bài" : "trống") + '</small></a>';
     }
-    return pageHead("Tuần học trong năm", "Xem tất cả bài giảng của mọi môn trong cùng một tuần.") +
+    return pageHead("Tuần học trong năm",
+        "Xem tất cả bài giảng của mọi môn trong cùng một tuần." +
+        (TUAN_NAY ? " Đang là tuần " + TUAN_NAY + " của năm học " + (NH.ten || "") + "." : "")) +
       '<div class="week-index">' + html + '</div>';
   }
   const ds = Kho.tatCa().filter(o => o.tuan === n && o.link);
   return crumb([{ten:"Tuần học",href:"#/tuan-hoc"},{ten:"Tuần "+n}]) +
-    pageHead("Tuần " + n, "Toàn bộ bài giảng đã gắn link của tuần này.") +
+    pageHead("Tuần " + n + (n===TUAN_NAY ? " — tuần này" : ""), "Toàn bộ bài giảng đã gắn link của tuần này.") +
     (ds.length ? dsBai(ds) : hopTrong("Tuần " + n + " chưa có bài giảng",
       "Chưa môn nào gắn link cho tuần này. Thêm link tuần <b>" + n + "</b> trong file assets/js/links.js."));
 };
 
 /* -------------------------------- LỚP HỌC -------------------------------- */
+const MAU_LOP = ["#2563eb","#16a34a","#db2777","#ea580c","#7c3aed"];
+const NEN_LOP = ["linear-gradient(180deg,#eaf3fe,#dceafc)","linear-gradient(180deg,#ecf9ef,#e0f4e6)",
+                 "linear-gradient(180deg,#fdeef5,#fbe2ee)","linear-gradient(180deg,#fef3e8,#fdeada)",
+                 "linear-gradient(180deg,#f4f1fe,#e9e2fd)"];
+const gradLop = l => "linear-gradient(135deg," + MAU_LOP[l-1] + "cc," + MAU_LOP[l-1] + ")";
+
 Trang["/lop-hoc"] = function(r){
   const lop = Number(r.seg[1]);
+
   if (!lop){
-    const mau = ["#2563eb","#16a34a","#db2777","#ea580c","#7c3aed"];
-    return pageHead("Lớp học", "Chọn khối lớp để xem các môn đang dạy.") +
-      '<div class="grades">' + [1,2,3,4,5].map(l =>
-        '<a class="grade" href="#/lop-hoc/' + l + '">' +
-        '<div class="num" style="background:linear-gradient(135deg,' + mau[l-1] + 'cc,' + mau[l-1] + ')">' + l + '</div>' +
-        '<div class="lb" style="color:' + mau[l-1] + '">Lớp ' + l + '</div>' +
-        '<div class="sub">' + DB.monTheoLop(l).length + ' môn · ' + Kho.dem({lop:l}) + ' bài</div></a>').join("") + '</div>' +
-      '<section style="margin-top:26px">' + secHead("Lớp chủ nhiệm của tôi") +
-        '<div class="card pad"><h3 style="font-size:16px;font-weight:700">Lớp ' + esc(me().lopChuNhiem || "chưa đặt") +
-        ' — ' + esc(me().truong || "") + '</h3>' +
-        '<p class="hint">Đổi thông tin ở mục <a href="#/tai-khoan">Tài khoản</a>.</p></div></section>';
+    const cn = String(me().lopChuNhiem || "").trim();
+    const soCN = (cn.match(/[1-5]/) || [])[0];
+    return pageHead("Khối lớp", "Chọn khối lớp để xem toàn bộ môn đang dạy và tiến độ giáo án của khối đó.") +
+      '<div class="grades">' + [1,2,3,4,5].map(l => theLop({
+        href:"#/lop-hoc/" + l, so:l, ten:"Lớp " + l,
+        phu:DB.monTheoLop(l).length + " môn học",
+        mau:MAU_LOP[l-1], grad:gradLop(l),
+        co:Kho.dem({ lop:l }), tong:DB.monTheoLop(l).length * SO_TUAN
+      })).join("") + '</div>' +
+
+      '<section>' + secHead("Lớp chủ nhiệm của tôi") +
+        '<div class="homeroom">' +
+          '<span class="av">' + esc(cn || "?") + '</span>' +
+          '<div class="info"><h3>Lớp ' + esc(cn || "chưa đặt") + '</h3>' +
+          '<p>' + esc(me().truong || "Chưa đặt tên trường") + ' · ' + esc(me().ten || "Giáo viên") + '</p></div>' +
+          '<div class="row-btn">' +
+            (soCN ? '<a class="btn-blue" href="#/lop-hoc/' + soCN + '">' + ic("book",15) + ' Môn của lớp ' + soCN + '</a>' : '') +
+            '<a class="btn-pill" href="#/tai-khoan">' + ic("edit",15) + ' Sửa thông tin</a>' +
+          '</div>' +
+        '</div></section>';
   }
-  return crumb([{ten:"Lớp học",href:"#/lop-hoc"},{ten:"Lớp "+lop}]) +
-    pageHead("Các môn của lớp " + lop, "Chọn môn để xem " + SO_TUAN + " tuần của lớp " + lop + ".") +
-    '<div class="subjects">' + DB.monTheoLop(lop).map(m =>
-      theMon(m, "#/mon/" + m.id + "/" + lop, "Vào lớp " + lop)).join("") + '</div>';
+
+  const dsMon = DB.monTheoLop(lop);
+  const co    = Kho.dem({ lop:lop });
+  const tong  = dsMon.length * SO_TUAN;
+
+  return navPhu({ href:"#/lop-hoc", ten:"Khối khác" },
+                [{ten:"Khối lớp",href:"#/lop-hoc"},{ten:"Lớp " + lop}]) +
+
+    heroLon({
+      sm:true, nen:NEN_LOP[lop-1], mau:MAU_LOP[lop-1], grad:gradLop(lop), so:lop,
+      eyebrow:"Khối lớp", ten:"Lớp " + lop,
+      mo:"Toàn bộ môn học của khối lớp " + lop + " theo chương trình GDPT 2018. " +
+         "Chọn một môn để mở " + SO_TUAN + " tuần giáo án.",
+      stats:[{ b:dsMon.length, s:"môn học" }, { b:tong, s:"ô tuần" }, { b:co, s:"tuần đã có bài" }],
+      co:co, tong:tong
+    }) +
+
+    '<section>' + secHead("Môn học của lớp " + lop) +
+      '<div class="subjects">' + dsMon.map(m =>
+        theMon(m, "#/mon/" + m.id + "/" + lop, "Vào lớp " + lop, lop)).join("") + '</div></section>';
 };
 
 /* ------------------------------- YÊU THÍCH ------------------------------- */
@@ -748,7 +970,6 @@ let hashCu = null;
 function render(){
   const r = duongDan();
   const fn = Trang[r.path] || Trang["/" + (r.seg[0] || "")] || Trang["/"];
-  document.body.classList.toggle("solo", r.seg[0] === "mon");
   $("#view").innerHTML = fn(r);
   if (hashCu !== location.hash) window.scrollTo(0, 0);
   hashCu = location.hash;
@@ -762,6 +983,7 @@ function render(){
   if (document.activeElement !== si) si.value = r.q.q || "";
 
   document.body.classList.remove("nav-open");
+  veCotPhu();
   ganSuKien(r);
 }
 
@@ -814,6 +1036,31 @@ document.addEventListener("click", e => {
 
   const gn = T("[data-gan]");
   if (gn){ e.preventDefault(); hopGanLink(gn.dataset.gan); return; }
+
+  const lc = T("[data-loc]");
+  if (lc){
+    e.preventDefault();
+    const w = $("#tuanWrap");
+    if (w) w.dataset.cheDo = lc.dataset.loc;
+    $$("[data-loc]").forEach(b => b.classList.toggle("on", b === lc));
+    return;
+  }
+
+  const nh = T("[data-nhay]");
+  if (nh){
+    e.preventDefault();
+    const w = $("#tuanWrap");
+    if (w && w.dataset.cheDo !== "tat-ca"){          // bỏ lọc để chắc chắn thấy được ô
+      w.dataset.cheDo = "tat-ca";
+      $$("[data-loc]").forEach(b => b.classList.toggle("on", b.dataset.loc === "tat-ca"));
+    }
+    const o = $("#tuan-" + nh.dataset.nhay);
+    if (o){
+      o.scrollIntoView({ behavior:"smooth", block:"center" });
+      o.classList.add("chop"); setTimeout(() => o.classList.remove("chop"), 1600);
+    }
+    return;
+  }
 
   const op = T("[data-open]");
   if (op){ ghiNhanMo(op.dataset.open); return; }
@@ -919,21 +1166,43 @@ function capNhatHeader(){
   $("#meName").textContent = me().ten || "Giáo viên";
   const n = (D.thongBao || []).length, b = $("#bellBadge");
   b.textContent = n; b.dataset.empty = n ? "0" : "1";
+
+  const bt = $("#btnTuanNay");
+  if (bt){
+    bt.setAttribute("href", TUAN_NAY ? "#/tuan-hoc/" + TUAN_NAY : "#/tuan-hoc");
+    $("span", bt).textContent = TUAN_NAY ? "Tuần " + TUAN_NAY + " · tuần này" : "Tuần học";
+  }
 }
 
-$("#sideExtra").innerHTML =
-  '<div class="pro-card">' +
-    '<div class="card-head"><span class="ic" style="background:#22a55b;color:#fff">' + icf("star",15) + '</span>' +
-    '<span class="tt" style="color:#166534">Nâng cấp Pro</span></div>' +
-    '<div class="card-body" style="color:#446157">Truy cập kho giáo án cao cấp, không giới hạn và nhiều ưu đãi hấp dẫn.</div>' +
-    '<a class="btn-green" href="#/huong-dan">Nâng cấp ngay</a>' +
-  '</div>' +
-  '<div class="support-card">' +
-    '<div class="card-head"><span class="ic" style="background:#eff6ff;color:#2f6fed">' + ic("support",16) + '</span>' +
-    '<span class="tt">Trung tâm hỗ trợ</span></div>' +
-    '<div class="card-body" style="color:#64748b">Hướng dẫn, câu hỏi thường gặp và liên hệ hỗ trợ.</div>' +
-    '<a class="btn-outline" href="#/huong-dan">Xem ngay</a>' +
+/* Thẻ tiến độ kho giáo án — thay cho thẻ "Nâng cấp Pro" trước đây,
+   vì nút đó chưa nối vào tính năng nào thật.                          */
+function theTienDoKho(){
+  const tong = DB.dsMon().reduce((s,m) => s + m.lop.length * SO_TUAN, 0);
+  const co   = Kho.dem();
+  const pct  = tong ? Math.round(co * 100 / tong) : 0;
+  const tt   = trangThaiNamHoc();
+  return '<div class="pro-card">' +
+    '<div class="card-head"><span class="ic" style="background:#22a55b;color:#fff">' + icf("leaf",15) + '</span>' +
+    '<span class="tt" style="color:#166534">Kho giáo án</span></div>' +
+    '<div class="card-body" style="color:#446157">Đã gắn <b>' + co + '</b> trên tổng <b>' + tong + '</b> ô tuần' +
+      (tt.tuan ? '. Đang ở <b>tuần ' + tt.tuan + '</b> năm học ' + esc(NH.ten || "") : "") + '.</div>' +
+    '<div style="margin-bottom:12px">' + thanhTienDo(co, tong, "linear-gradient(90deg,#22a55b,#16a34a)") +
+      '<div class="hint" style="margin-top:6px;color:#5c7a68">Hoàn thành ' + pct + '%</div></div>' +
+    '<a class="btn-green" href="' + (tt.tuan ? "#/tuan-hoc/" + tt.tuan : "#/giao-an") + '">' +
+      (tt.tuan ? "Bài giảng tuần " + tt.tuan : "Vào kho giáo án") + '</a>' +
   '</div>';
+}
+
+function veCotPhu(){
+  $("#sideExtra").innerHTML =
+    theTienDoKho() +
+    '<div class="support-card">' +
+      '<div class="card-head"><span class="ic" style="background:#eff6ff;color:#2f6fed">' + ic("support",16) + '</span>' +
+      '<span class="tt">Trung tâm hỗ trợ</span></div>' +
+      '<div class="card-body" style="color:#64748b">Hướng dẫn, câu hỏi thường gặp và liên hệ hỗ trợ.</div>' +
+      '<a class="btn-outline" href="#/huong-dan">Xem ngay</a>' +
+    '</div>';
+}
 
 $("#searchForm").addEventListener("submit", e => {
   e.preventDefault();
@@ -952,6 +1221,7 @@ $("#btnBell").addEventListener("click", () => openModal({
 window.addEventListener("hashchange", render);
 Kho.nap();
 capNhatHeader();
+veCotPhu();
 render();
 if (Kho.loi.length) toast(Kho.loi.length + " chỗ trong links.js chưa đúng — xem mục Tài khoản", "err");
 

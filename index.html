@@ -6,6 +6,14 @@
 <title>Bảng Xanh – Giáo án trình chiếu PPT</title>
 <meta name="description" content="Kho bài giảng trình chiếu PPT tiểu học theo môn, lớp và 35 tuần học, mở thẳng từ Google Drive.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 36'><rect x='2' y='4' width='32' height='26' rx='4' fill='%23e8f6ee'/><path d='M18 24c-4-6 1-13 8-13 1 7-3 13-8 13z' fill='%2322a55b'/><path d='M18 24c1-5-2-10-7-11 0 6 3 10 7 11z' fill='%235bc17f'/></svg>">
+<link rel="apple-touch-icon" href="assets/img/icon.svg">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#16a34a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Bảng Xanh">
+<meta property="og:title" content="Bảng Xanh – Giáo án trình chiếu PPT tiểu học">
+<meta property="og:description" content="Chọn môn → chọn lớp → chọn tuần là có ngay bài giảng, mở thẳng từ Google Drive.">
+<meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
@@ -100,7 +108,7 @@
         <input id="searchInput" type="search" placeholder="Tìm kiếm giáo án, bài giảng, chủ đề..." aria-label="Tìm kiếm" autocomplete="off">
         <button type="submit" class="search-go" aria-label="Tìm"><svg class="ic17"><use href="#i-search"/></svg></button>
       </form>
-      <a class="btn-pro" href="#/huong-dan"><svg class="ic15 fill-star" viewBox="0 0 24 24"><use href="#f-star"/></svg> Nâng cấp Pro</a>
+      <a class="btn-pro" id="btnTuanNay" href="#/tuan-hoc"><svg class="ic15"><use href="#i-calendar-full"/></svg> <span>Tuần học</span></a>
       <button class="bell" id="btnBell" aria-label="Thông báo">
         <svg class="ic24"><use href="#i-bell"/></svg><span class="badge" id="bellBadge">3</span>
       </button>
@@ -134,5 +142,15 @@
 <script src="assets/js/links.js"></script>
 <script src="assets/js/data.js"></script>
 <script src="assets/js/app.js"></script>
+
+<!-- Cho phép cài app lên màn hình chính và mở được khi lớp mất mạng.
+     Chỉ chạy trên https hoặc localhost; mở bằng file:// thì bỏ qua. -->
+<script>
+if ("serviceWorker" in navigator && location.protocol !== "file:") {
+  window.addEventListener("load", function () {
+    navigator.serviceWorker.register("sw.js").catch(function () {});
+  });
+}
+</script>
 </body>
 </html>

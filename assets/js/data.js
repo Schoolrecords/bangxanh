@@ -17,6 +17,23 @@ window.BANG_XANH = {
 
   soTuan: 35,
 
+  /* ---------- NĂM HỌC ----------
+     Sửa mỗi năm một lần. App tự tính "tuần hiện tại" từ ngày khai giảng
+     rồi tô sáng đúng ô tuần đang dạy. Viết theo dạng NĂM-THÁNG-NGÀY.
+
+     ⚠ QUAN TRỌNG — mục "nghi":
+     Những tuần nghỉ (Tết, nghỉ giữa kì…) KHÔNG được tính là tuần học.
+     Nếu bỏ trống, sau Tết app sẽ báo tuần lớn hơn tuần dạy thật khoảng
+     2 tuần. Thầy cô sửa lại đúng lịch nghỉ mà trường thông báo.
+     Mỗi dòng là một khoảng nghỉ, viết ngày đầu và ngày cuối.            */
+  namHoc: {
+    ten: "2026 – 2027",
+    khaiGiang: "2026-09-07",
+    nghi: [
+      { ten: "Nghỉ Tết Nguyên đán", tu: "2027-02-08", den: "2027-02-21" }
+    ]
+  },
+
   hocKy: [
     { ten: "Học kì 1", tu: 1,  den: 18 },
     { ten: "Học kì 2", tu: 19, den: 35 }

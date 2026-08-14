@@ -6,14 +6,45 @@
 > Giao diện dựng bám theo bản thiết kế trong thư mục **`design_handoff_bang_xanh`**
 > (`index.html` = trang chủ, `mon.html` = chọn lớp, `tuan.html` = 35 tuần).
 
+## Cài lên máy như một app
+
+Mở bản web bằng Chrome hoặc Edge → bấm biểu tượng **Cài đặt / Install** ở cuối thanh địa chỉ.
+App hiện ra như phần mềm riêng, có biểu tượng ngoài màn hình, mở nhanh, và **vẫn mở được khi lớp mất mạng**
+(vỏ app đã lưu sẵn trong máy — riêng file bài giảng nằm trên Google Drive thì vẫn cần mạng).
+
 ## Luồng sử dụng
 
 ```
 Trang chủ → Môn học → Lớp 1..5 → 35 tuần (Học kì 1 + Học kì 2) → bấm tuần → mở Google Drive
 ```
 
-Tuần có **chấm xanh + “Mở Drive”** là đã có bài. Tuần mờ ghi **“Sắp có”** là chưa gắn link — bấm vào để gắn nhanh.
+Tuần có **chấm xanh + “Mở Drive”** là đã có bài. Tuần viền đứt ghi **“Sắp có”** là chưa gắn link — bấm vào để gắn nhanh.
 Rê chuột lên ô tuần sẽ hiện 2 nút nhỏ: 👁 xem trước ngay trong app, ♡ ghim vào Yêu thích.
+
+Trong trang 35 tuần có thanh lọc **Tất cả / Đã có bài / Chưa có** và nút **Tới tuần này**.
+
+## ⭐ Đặt ngày khai giảng — để app biết “tuần này là tuần mấy”
+
+Mở **`assets/js/data.js`**, sửa mục `namHoc`. Mỗi năm chỉ làm một lần:
+
+```js
+namHoc: {
+  ten: "2026 – 2027",
+  khaiGiang: "2026-09-07",          // ngày tựu trường, dạng NĂM-THÁNG-NGÀY
+  nghi: [
+    { ten: "Nghỉ Tết Nguyên đán", tu: "2027-02-08", den: "2027-02-21" }
+  ]
+},
+```
+
+Xong việc đó thì app tự:
+
+- hiện dải **“Tuần N”** ngoài trang chủ kèm khoảng ngày của tuần,
+- tô sáng đúng ô tuần đang dạy trong lưới 35 tuần (có nhãn *Tuần này*),
+- ghi tuần hiện tại lên nút ở thanh trên và thẻ tiến độ ở cột trái.
+
+> ⚠️ Nhớ khai báo **`nghi`** cho đúng lịch nghỉ của trường. Tuần nghỉ không được tính là
+> tuần học — bỏ trống thì sau Tết app sẽ báo tuần lớn hơn tuần dạy thật khoảng 2 tuần.
 
 ## Thêm bài giảng — chỉ sửa 1 file
 
@@ -65,7 +96,7 @@ Gõ sai mã môn / lớp / tuần / link, app báo rõ sai ở đâu trong mục
 
 | Mục | Nội dung |
 |---|---|
-| **Trang chủ** | Banner, 6 lối tắt, 4 môn nổi bật, bộ sưu tập, bài mở gần đây |
+| **Trang chủ** | Banner, 6 lối tắt, **dải “Tuần này”**, 4 môn nổi bật, bộ sưu tập, bài mở gần đây |
 | **Giáo án** | Lưới 13 môn học — cổng vào chính |
 | **Bộ sưu tập** | 5 nhóm theo mục đích dùng (gắn bằng `tap` trong links.js) |
 | **Tuần học** | Lưới 35 tuần, bấm 1 tuần thấy bài của **mọi môn** trong tuần đó |
@@ -81,14 +112,16 @@ Gõ sai mã môn / lớp / tuần / link, app báo rõ sai ở đâu trong mục
 ```
 Bảng Xanh/
 ├─ index.html            ← chạy app
+├─ manifest.webmanifest  ← cho phép cài app lên máy
+├─ sw.js                 ← chạy được khi mất mạng (sửa xong nhớ tăng PHIEN_BAN)
 ├─ HUONG-DAN-SU-DUNG.md
 ├─ design_handoff_bang_xanh/   ← bản thiết kế gốc (để đối chiếu)
 └─ assets/
-   ├─ css/style.css      ← màu sắc, bố cục
+   ├─ css/style.css      ← màu sắc, bố cục (bộ màu chung nằm ở đầu file, mục :root)
    ├─ js/links.js        ← ⭐ LINK BÀI GIẢNG + danh sách môn
-   ├─ js/data.js         ← giáo viên, bộ sưu tập, lịch mẫu, hướng dẫn
+   ├─ js/data.js         ← ⭐ năm học, giáo viên, bộ sưu tập, lịch mẫu, hướng dẫn
    ├─ js/app.js          ← phần xử lý
-   └─ img/               ← 13 ảnh PNG bản thiết kế + 9 SVG môn phụ
+   └─ img/               ← 13 ảnh PNG bản thiết kế + 9 SVG môn phụ + icon app
 ```
 
 ## Cập nhật bản trên web
