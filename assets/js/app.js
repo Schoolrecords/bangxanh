@@ -16,8 +16,10 @@ const $$ = (s, r) => Array.prototype.slice.call((r || document).querySelectorAll
 const esc = s => String(s == null ? "" : s)
   .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
   .replace(/"/g,"&quot;").replace(/'/g,"&#39;");
-const ic  = (n, sz) => '<svg class="ic' + (sz || 19) + '"><use href="#i-' + n + '"/></svg>';
-const icf = (n, sz) => '<svg class="ic' + (sz || 19) + ' fill"><use href="#f-' + n + '"/></svg>';
+/* Kích thước ghi thẳng vào thẻ svg để gọi cỡ nào cũng đúng, không phụ thuộc
+   việc CSS có sẵn lớp .icNN hay chưa. */
+const ic  = (n, sz) => '<svg class="ic' + (sz = sz || 19) + '" width="' + sz + '" height="' + sz + '"><use href="#i-' + n + '"/></svg>';
+const icf = (n, sz) => '<svg class="ic' + (sz = sz || 19) + ' fill" width="' + sz + '" height="' + sz + '"><use href="#f-' + n + '"/></svg>';
 const anh = f => "assets/img/" + f;
 const TICK = '<svg class="check-ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="#22a55b"/>' +
              '<path d="m7.5 12.5 3 3 6-6.5" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>';
@@ -543,21 +545,21 @@ function heroHTML(){
 }
 const veLaiHero = () => { const h = $("#hero"); if (h) h.innerHTML = heroHTML(); return !!h; };
 
-/* Dải "Tuần này" ngoài trang chủ — cho biết đang ở tuần thứ mấy của năm học
-   và mở thẳng danh sách bài giảng của tuần đó.                            */
+/* Dải "Tuần này" ngoài trang chủ. Chỉ hiện khi đang thực sự trong một tuần
+   học — ngoài kỳ (nghỉ hè, nghỉ Tết, chưa đặt ngày khai giảng) thì không vẽ
+   gì cả, tránh chiếm chỗ bằng một dải rỗng.                                */
 function theTuanNay(){
   const tt = trangThaiNamHoc();
-  const n  = tt.tuan ? Kho.dem({ tuan:tt.tuan }) : 0;
-  return '<div class="tuannay' + (tt.tuan ? "" : " mo") + '">' +
-    '<span class="so">' + (tt.tuan || ic("calendar",26)) + '</span>' +
+  if (!tt.tuan) return "";
+  const n = Kho.dem({ tuan:tt.tuan });
+  return '<div class="tuannay">' +
+    '<span class="so">' + tt.tuan + '</span>' +
     '<div class="txt"><h3>' + esc(tt.nhan) + '</h3><p>' + esc(tt.mo) + '</p></div>' +
-    (tt.tuan
-      ? '<div class="row-btn">' +
-          '<a class="btn-green" style="width:auto" href="#/tuan-hoc/' + tt.tuan + '">' + ic("grid",15) +
-          ' Xem ' + (n ? n + " bài giảng" : "tuần " + tt.tuan) + '</a>' +
-          '<a class="btn-pill" href="#/lich-day">' + ic("calendar",15) + ' Lịch báo giảng</a>' +
-        '</div>'
-      : '<a class="btn-pill" href="#/huong-dan">' + ic("help",15) + ' Hướng dẫn</a>') +
+    '<div class="row-btn">' +
+      '<a class="btn-green" style="width:auto" href="#/tuan-hoc/' + tt.tuan + '">' + ic("grid",15) +
+      ' Xem ' + (n ? n + " bài giảng" : "tuần " + tt.tuan) + '</a>' +
+      '<a class="btn-pill" href="#/lich-day">' + ic("calendar",15) + ' Lịch báo giảng</a>' +
+    '</div>' +
   '</div>';
 }
 
@@ -948,6 +950,11 @@ Trang["/tai-khoan"] = function(){
     '</div>' +
     (Kho.loi.length ? '<div class="banner warn"><span><b>Có ' + Kho.loi.length + ' chỗ trong links.js chưa đúng:</b><br>' +
       Kho.loi.map(esc).join("<br>") + '</span></div>' : "") +
+    (TUAN_NAY
+      ? '<div class="banner">' + ic("calendar",16) + '<span>Năm học <b>' + esc(NH.ten || "") +
+        '</b> · đang là <b>tuần ' + TUAN_NAY + '</b>.</span></div>'
+      : '<div class="banner warn">' + ic("calendar",16) + '<span><b>' + esc(trangThaiNamHoc().nhan) + '.</b> ' +
+        esc(trangThaiNamHoc().mo) + ' Sửa mục <b>namHoc</b> trong file <b>assets/js/data.js</b>.</span></div>') +
     '<section>' + secHead("Thông tin giáo viên") +
       '<div class="card pad"><form class="form" id="formMe">' +
         '<div class="g3">' +
