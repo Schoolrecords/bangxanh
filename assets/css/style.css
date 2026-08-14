@@ -14,16 +14,19 @@
   --xanh-nhat:#e8f6ee;
   --lam:#2f6fed;          /* xanh dương phụ */
   --do:#dc2626;
-  --nen:#edf7f0;          /* nền trang — xanh bạc hà rất nhạt */
+  /* Nền phải đủ đậm hơn thẻ trắng thì thẻ mới nổi. Chênh khoảng 8–9%
+     độ sáng là vừa: vẫn là xanh nhạt nhưng nội dung không bị bệt. */
+  --nen:#dfeee7;          /* nền trang — xanh bạc hà nhạt */
   --the:#fff;            /* nền thẻ */
-  --vien:#eaf0f6;
-  --vien-dam:#e2e8f0;
+  --vien:#d7e7de;         /* viền thẻ, đậm hơn nền để thấy rõ mép */
+  --vien-dam:#c8dcd1;
   --chu:#1e293b;
-  --chu-nhat:#64748b;
-  --chu-mo:#94a3b8;
-  --bong-1:0 1px 3px rgba(30,64,120,.05);
-  --bong-2:0 6px 16px rgba(30,64,120,.12);
-  --bong-3:0 12px 26px rgba(30,64,120,.14);
+  --chu-nhat:#5b7386;
+  --chu-mo:#758d95;
+  /* Đổ bóng ngả xanh cho hợp nền, và đủ đậm để thấy được */
+  --bong-1:0 1px 2px rgba(14,58,40,.07),0 3px 8px rgba(14,58,40,.06);
+  --bong-2:0 6px 16px rgba(14,58,40,.13);
+  --bong-3:0 14px 30px rgba(14,58,40,.16);
   --bo:16px;              /* bo góc thẻ */
   --bo-lon:20px;
 }
@@ -60,7 +63,7 @@ svg[class^="ic"]{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:rou
 
 /* --- Sidebar --- */
 aside{width:240px;flex-shrink:0;display:flex;flex-direction:column;gap:16px}
-.side-card{background:#fff;border-radius:18px;padding:14px 12px;box-shadow:0 1px 3px rgba(30,64,120,.06)}
+.side-card{background:#fff;border-radius:18px;padding:14px 12px;box-shadow:var(--bong-1)}
 .logo{display:flex;align-items:center;gap:10px;padding:2px 4px 12px;color:inherit}
 .logo:hover{color:inherit}
 .logo-name{font-size:20px;font-weight:700;color:var(--xanh);letter-spacing:-.3px}
@@ -121,7 +124,7 @@ main{flex:1;min-width:0;display:flex;flex-direction:column;gap:22px}
 .user .chev{color:var(--chu-nhat)}
 
 /* --- Hero --- */
-.hero{position:relative;border-radius:20px;overflow:hidden;background:linear-gradient(100deg,#f2f7fe 0%,#e3edfb 55%,#dbe8fa 100%);padding:34px 0 26px 34px;min-height:340px}
+.hero{position:relative;border-radius:20px;overflow:hidden;box-shadow:var(--bong-1);background:linear-gradient(100deg,#f2f7fe 0%,#e3edfb 55%,#dbe8fa 100%);padding:34px 0 26px 34px;min-height:340px}
 .hero-img{position:absolute;right:0;bottom:0;width:min(448px,44%);height:auto;object-fit:cover;-webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 14%);mask-image:linear-gradient(90deg,transparent 0%,#000 14%)}
 .hero-content{position:relative;max-width:min(430px,50%);display:flex;flex-direction:column;align-items:flex-start}
 .hero h1{margin:0 0 16px;font-size:34px;line-height:1.3;font-weight:700;color:#1d3f74;letter-spacing:-.3px}
@@ -294,7 +297,7 @@ main{flex:1;min-width:0;display:flex;flex-direction:column;gap:22px}
 .w-item{position:relative}
 .week{position:relative;display:flex;flex-direction:column;align-items:center;gap:4px;
   width:100%;height:100%;padding:11px 7px 10px;border-radius:15px;font:inherit;text-align:center;
-  background:linear-gradient(180deg,#fff 0%,#f7fafd 100%);border:1px solid var(--vien);color:inherit;
+  background:linear-gradient(180deg,#fff 0%,#f6fbf8 100%);border:1px solid var(--vien);color:inherit;
   box-shadow:0 5px 0 var(--canh,#d3e0ee), 0 7px 14px rgba(30,64,120,.13);
   transition:transform .13s ease,box-shadow .13s ease,border-color .13s ease}
 .week:hover{transform:translateY(-3px);color:inherit;
@@ -313,7 +316,7 @@ main{flex:1;min-width:0;display:flex;flex-direction:column;gap:22px}
   display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 
 /* Tuần chưa gắn link: khối thấp hơn một bậc, viền đứt, icon xám */
-.week.none{background:linear-gradient(180deg,#fdfeff 0%,#f2f7fc 100%);
+.week.none{background:linear-gradient(180deg,#fdfffe 0%,#f0f8f3 100%);
   border-style:dashed;border-color:#d3e0ee;
   box-shadow:0 3px 0 #e2eaf4, 0 4px 9px rgba(30,64,120,.08)}
 .week.none .ppt-ic{filter:grayscale(1);opacity:.42}
