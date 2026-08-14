@@ -14,7 +14,7 @@
   --xanh-nhat:#e8f6ee;
   --lam:#2f6fed;          /* xanh dương phụ */
   --do:#dc2626;
-  --nen:#eef4fa;          /* nền trang */
+  --nen:#edf7f0;          /* nền trang — xanh bạc hà rất nhạt */
   --the:#fff;            /* nền thẻ */
   --vien:#eaf0f6;
   --vien-dam:#e2e8f0;
@@ -84,6 +84,20 @@ nav{display:flex;flex-direction:column;gap:4px}
 .teacher{width:100%;border-radius:16px;display:block;mix-blend-mode:multiply;-webkit-mask-image:linear-gradient(180deg,#000 86%,transparent 100%);mask-image:linear-gradient(180deg,#000 86%,transparent 100%)}
 .sidebar-backdrop{display:none}
 
+/* Cột trái dính theo màn hình: menu luôn trong tầm mắt khi cuộn 35 tuần,
+   và ảnh cô giáo tự co cho vừa chiều cao còn lại thay vì bị mép dưới
+   màn hình cắt ngang mặt. */
+@media (min-width:900px){
+  aside{position:sticky;top:20px;max-height:calc(100dvh - 26px);overflow:hidden}
+  .side-card,.pro-card,.support-card{flex-shrink:0}
+  /* Còn bao nhiêu chỗ thì ảnh lấy bấy nhiêu, cắt bớt phần chân chứ không
+     bóp méo. Đáy ảnh vốn đã mờ dần nên chỗ cắt không lộ. */
+  .teacher{margin-top:auto;flex:0 1 auto;min-height:0;max-height:230px;
+    object-fit:cover;object-position:center top}
+}
+/* Màn hình thấp thì không còn chỗ cho ảnh, ẩn hẳn còn hơn để hở một sợi */
+@media (min-width:900px) and (max-height:980px){ .teacher{display:none} }
+
 /* --- Main --- */
 main{flex:1;min-width:0;display:flex;flex-direction:column;gap:22px}
 #view{display:flex;flex-direction:column;gap:22px}
@@ -98,7 +112,7 @@ main{flex:1;min-width:0;display:flex;flex-direction:column;gap:22px}
 .btn-pro:hover{filter:brightness(1.05);color:#fff}
 .bell{position:relative;cursor:pointer;color:#475569;background:none;display:flex;align-items:center}
 .bell:hover{color:var(--xanh)}
-.badge{position:absolute;top:-6px;right:-7px;background:#ef4444;color:#fff;font-size:10.5px;font-weight:700;border-radius:999px;min-width:17px;height:17px;display:flex;align-items:center;justify-content:center;border:2px solid #eef4fa}
+.badge{position:absolute;top:-6px;right:-7px;background:#ef4444;color:#fff;font-size:10.5px;font-weight:700;border-radius:999px;min-width:17px;height:17px;display:flex;align-items:center;justify-content:center;border:2px solid var(--nen)}
 .badge[data-empty="1"]{display:none}
 .user{display:flex;align-items:center;gap:9px;cursor:pointer;color:#1e293b}
 .user:hover{color:var(--xanh)}
@@ -412,7 +426,7 @@ main{flex:1;min-width:0;display:flex;flex-direction:column;gap:22px}
 .faq b{font-size:14px;font-weight:700}
 .faq span{font-size:13px;font-weight:600;color:var(--chu-nhat);line-height:1.55}
 .code{background:#0f2035;color:#dbeafe;border-radius:12px;padding:14px;overflow-x:auto;font-family:ui-monospace,Consolas,monospace;font-size:12.5px;line-height:1.75;white-space:pre;margin:0}
-code{background:#eef4fa;border:1px solid var(--vien-dam);border-radius:6px;padding:2px 6px;font-family:ui-monospace,Consolas,monospace;font-size:12.5px}
+code{background:var(--nen);border:1px solid var(--vien-dam);border-radius:6px;padding:2px 6px;font-family:ui-monospace,Consolas,monospace;font-size:12.5px}
 
 /* Thống kê */
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
@@ -473,7 +487,7 @@ code{background:#eef4fa;border:1px solid var(--vien-dam);border-radius:6px;paddi
 
 /* ===================== MÀN HÌNH NHỎ ===================== */
 @media (max-width:899px){
-  aside{position:fixed;left:0;top:0;height:100dvh;width:280px;z-index:120;background:#eef4fa;padding:14px;overflow-y:auto;transform:translateX(-104%);transition:transform .25s ease;display:flex}
+  aside{position:fixed;left:0;top:0;height:100dvh;width:280px;z-index:120;background:var(--nen);padding:14px;overflow-y:auto;transform:translateX(-104%);transition:transform .25s ease;display:flex}
   body.nav-open aside{transform:none;box-shadow:0 10px 40px rgba(15,32,53,.3)}
   body.nav-open .sidebar-backdrop{display:block;position:fixed;inset:0;background:rgba(15,32,53,.45);z-index:110}
   .m-logo{display:flex}
