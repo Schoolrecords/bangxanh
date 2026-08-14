@@ -46,6 +46,21 @@ Xong việc đó thì app tự:
 > ⚠️ Nhớ khai báo **`nghi`** cho đúng lịch nghỉ của trường. Tuần nghỉ không được tính là
 > tuần học — bỏ trống thì sau Tết app sẽ báo tuần lớn hơn tuần dạy thật khoảng 2 tuần.
 
+## Thời khoá biểu
+
+Mục `lichDay` trong `data.js` chỉ ghi **môn và lớp** cho từng tiết — tiết đó lặp lại ở mọi tuần:
+
+```js
+lichDay: [
+  { thu:2, tiet:1, mon:"toan",  lop:3 },
+  { thu:2, tiet:2, mon:"tviet", lop:3 },
+],
+```
+
+Vào mục **Lịch dạy**, app mở sẵn tuần hiện tại và lấy đúng bài giảng của tuần đó.
+Muốn xem tuần khác thì chọn ở ô **Xem tuần**. Chỉ khi nào muốn ghim cứng một tiết vào
+đúng một tuần mới thêm `tuan: 5`.
+
 ## Thêm bài giảng — chỉ sửa 1 file
 
 Mở **`assets/js/links.js`** bằng Notepad. Cấu trúc:
@@ -102,7 +117,7 @@ Gõ sai mã môn / lớp / tuần / link, app báo rõ sai ở đâu trong mục
 | **Tuần học** | Lưới 35 tuần, bấm 1 tuần thấy bài của **mọi môn** trong tuần đó |
 | **Lớp học** | Vào theo khối 1–5, thấy các môn của khối đó |
 | **Yêu thích** | Các tuần đã ghim bằng nút trái tim |
-| **Lịch dạy** | Bảng tiết trong tuần, bấm **▶ Dạy** là mở bài |
+| **Lịch dạy** | Thời khoá biểu lặp hằng tuần, chọn tuần để xem, bấm **▶ Dạy** là mở bài |
 | **Trợ lý AI** | Sinh khung 4 hoạt động tiết dạy (mẫu dựng sẵn, chạy offline — không phải AI thật) |
 | **Tìm kiếm** | Gõ không dấu: “toan 3”, “tuan 5”, “tieng viet” |
 | **Tài khoản** | Đổi tên giáo viên/trường/lớp, kiểm tra lỗi link, xoá dữ liệu máy |

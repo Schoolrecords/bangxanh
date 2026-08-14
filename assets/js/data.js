@@ -49,15 +49,18 @@ window.BANG_XANH = {
     { id:"ky-nang",     ten:"Kỹ năng sống",          anh:"col-5.png", moTa:"An toàn, ứng xử, tự phục vụ." }
   ],
 
-  /* ---------- LỊCH BÁO GIẢNG MẪU (thu 2..7) ---------- */
+  /* ---------- THỜI KHOÁ BIỂU (thứ 2..7, tiết 1..5) ----------
+     Mỗi dòng chỉ ghi môn và lớp — tiết đó lặp lại ở mọi tuần, app tự lấy
+     bài giảng của tuần đang xem. Chỉ thêm "tuan: 5" khi muốn ghim cứng
+     một tiết vào đúng tuần 5.                                            */
   lichDay: [
-    { thu:2, tiet:1, mon:"toan",   lop:3, tuan:1 },
-    { thu:2, tiet:2, mon:"tviet",  lop:3, tuan:1 },
-    { thu:3, tiet:1, mon:"toan",   lop:3, tuan:1 },
-    { thu:3, tiet:3, mon:"tinhoc", lop:3, tuan:1 },
-    { thu:4, tiet:2, mon:"tnxh",   lop:3, tuan:1 },
-    { thu:5, tiet:1, mon:"tanh",   lop:3, tuan:1 },
-    { thu:6, tiet:5, mon:"hdtn",   lop:3, tuan:1 }
+    { thu:2, tiet:1, mon:"toan",   lop:3 },
+    { thu:2, tiet:2, mon:"tviet",  lop:3 },
+    { thu:3, tiet:1, mon:"toan",   lop:3 },
+    { thu:3, tiet:3, mon:"tinhoc", lop:3 },
+    { thu:4, tiet:2, mon:"tnxh",   lop:3 },
+    { thu:5, tiet:1, mon:"tanh",   lop:3 },
+    { thu:6, tiet:5, mon:"hdtn",   lop:3 }
   ],
 
   /* ---------- TÀI LIỆU HƯỚNG DẪN ---------- */

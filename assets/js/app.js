@@ -388,9 +388,12 @@ function theMon(m, href, nhan, lop){
   const n    = lop ? Kho.dem({ mon:m.id, lop:lop }) : Kho.dem({ mon:m.id });
   const tong = (lop ? 1 : m.lop.length) * SO_TUAN;
   const pct  = tong ? Math.round(n * 100 / tong) : 0;
+  /* Ở một khối lớp thì mẫu số 35 tuần dễ hiểu; gộp cả 5 khối thì mẫu số
+     lên tới 175 nên chỉ ghi số bài cho gọn. */
+  const nhanSo = lop ? n + "/" + SO_TUAN + " tuần" : n + " bài";
   return '<a class="subj" href="' + (href || "#/mon/" + m.id) + '">' +
     '<div class="top" style="background:' + m.nen + '">' +
-      (n ? '<span class="cnt">' + n + '/' + tong + ' tuần</span>' : '') +
+      (n ? '<span class="cnt">' + nhanSo + '</span>' : '') +
       '<div class="name" style="color:' + m.mau + '">' + esc(m.ten) + '</div>' +
       '<img src="' + anh(m.img) + '" alt="' + esc(m.ten) + '" loading="lazy">' +
     '</div>' +
@@ -439,7 +442,7 @@ function heroLon(o){
     '</div></div>';
 }
 
-/* Thẻ chọn khối lớp — o = { href, so, ten, phu, mau, grad, co, tong } */
+/* Thẻ chọn khối lớp — o = { href, so, ten, phu, mau, grad, co, tong, donVi } */
 function theLop(o){
   return '<a class="grade" href="' + o.href + '" style="--mau:' + o.mau + '">' +
     '<span class="go">' + ic("arrow",15) + '</span>' +
@@ -447,7 +450,8 @@ function theLop(o){
     '<span class="lb" style="color:' + o.mau + '">' + esc(o.ten) + '</span>' +
     '<span class="sub">' + esc(o.phu) + '</span>' +
     thanhTienDo(o.co, o.tong, o.grad) +
-    '<span class="pct">' + (o.co ? o.co + '/' + o.tong + ' tuần đã có bài' : 'Chưa gắn bài giảng') + '</span>' +
+    '<span class="pct">' + (o.co ? o.co + '/' + o.tong + ' ' + (o.donVi || "tuần") + ' đã có bài'
+                                 : 'Chưa gắn bài giảng') + '</span>' +
   '</a>';
 }
 function theTap(t){
@@ -477,7 +481,7 @@ function oTuan(o){
     '</div>';
   const than =
     (nay ? '<span class="nhan-nay">Tuần này</span>' : '') +
-    '<svg class="ppt-ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#f-ppt"/></svg>' +
+    '<svg class="ppt-ic" viewBox="0 0 32 32" aria-hidden="true"><use href="#f-ppt"/></svg>' +
     '<span class="lb">Tuần ' + o.tuan + '</span>' +
     '<span class="st"><i class="dot"></i>' + (o.link ? "Mở Drive" : "Sắp có") + '</span>' +
     (o.ten ? '<span class="tenbai">' + esc(o.ten) + '</span>' : '');
@@ -584,7 +588,7 @@ Trang["/"] = function(){
     { t:"Lịch báo giảng", h:"#/lich-day",  bg:"linear-gradient(135deg,#34d399,#16a34a)", i:"calendar-full" },
     { t:"Kho bài giảng",  h:"#/giao-an",   bg:"linear-gradient(135deg,#fbbf24,#f59e0b)", i:"folder" },
     { t:"Yêu thích",      h:"#/yeu-thich", bg:"linear-gradient(135deg,#f472b6,#ec4899)", f:"heart" },
-    { t:"Tải lên",        h:"#/huong-dan", bg:"linear-gradient(135deg,#38bdf8,#2563eb)", i:"upload" },
+    { t:"Thêm bài giảng", h:"#/huong-dan", bg:"linear-gradient(135deg,#38bdf8,#2563eb)", i:"upload" },
     { t:"Xem tất cả",     h:"#/tuan-hoc",  bg:"linear-gradient(135deg,#a78bfa,#7c3aed)", f:"grid" }
   ];
   const tong = Kho.dem();
@@ -740,7 +744,8 @@ Trang["/tuan-hoc"] = function(r){
     for (let t = 1; t <= SO_TUAN; t++){
       const c = Kho.dem({tuan:t});
       html += '<a class="wi' + (c?" has":"") + (t===TUAN_NAY?" nay":"") + '" href="#/tuan-hoc/' + t + '">' +
-              '<b>' + t + '</b><small>' + (t===TUAN_NAY ? "tuần này" : c ? c + " bài" : "trống") + '</small></a>';
+              (t===TUAN_NAY ? '<span class="nhan-nay">Tuần này</span>' : '') +
+              '<b>' + t + '</b><small>' + (c ? c + " bài" : "trống") + '</small></a>';
     }
     return pageHead("Tuần học trong năm",
         "Xem tất cả bài giảng của mọi môn trong cùng một tuần." +
@@ -771,7 +776,7 @@ Trang["/lop-hoc"] = function(r){
       '<div class="grades">' + [1,2,3,4,5].map(l => theLop({
         href:"#/lop-hoc/" + l, so:l, ten:"Lớp " + l,
         phu:DB.monTheoLop(l).length + " môn học",
-        mau:MAU_LOP[l-1], grad:gradLop(l),
+        mau:MAU_LOP[l-1], grad:gradLop(l), donVi:"ô tuần",
         co:Kho.dem({ lop:l }), tong:DB.monTheoLop(l).length * SO_TUAN
       })).join("") + '</div>' +
 
@@ -845,12 +850,29 @@ Trang["/tim-kiem"] = function(r){
 };
 
 /* ------------------------------- LỊCH DẠY ------------------------------- */
-Trang["/lich-day"] = function(){
+Trang["/lich-day"] = function(r){
   const thu = [2,3,4,5,6,7], tiet = [1,2,3,4,5];
+  /* Thời khoá biểu lặp lại hằng tuần: mỗi ô chỉ ghi môn và lớp, còn tuần
+     lấy theo tuần đang xem. Ô nào ghi sẵn "tuan" trong data.js thì giữ
+     nguyên tuần đó.                                                     */
+  const tuan = Math.min(Math.max(Number(r.q.tuan) || TUAN_NAY || 1, 1), SO_TUAN);
   const all = D.lichDay.concat(S.lich);
   const tim = (t,ti) => { const d = all.filter(x => x.thu===t && x.tiet===ti); return d[d.length-1]; };
+  const mt = mocTuan(tuan);
+  const dd = x => x.toLocaleDateString("vi-VN", { day:"2-digit", month:"2-digit" });
 
-  let html = pageHead("Lịch báo giảng", "Xếp sẵn bài giảng cho từng tiết. Đến giờ chỉ cần bấm Dạy.") +
+  let html = pageHead("Lịch báo giảng", "Thời khoá biểu lặp hằng tuần. Đến giờ chỉ cần bấm Dạy.") +
+    '<div class="week-bar">' +
+      '<label class="chon-tuan">' + ic("calendar",15) + ' Xem tuần' +
+        '<select class="input" id="ldTuan">' +
+        Array.from({length:SO_TUAN}, (x,i) =>
+          '<option value="' + (i+1) + '"' + (i+1===tuan ? " selected" : "") + '>Tuần ' + (i+1) +
+          (i+1===TUAN_NAY ? " — tuần này" : "") + '</option>').join("") +
+        '</select></label>' +
+      (mt ? '<span class="count">Từ ' + dd(mt.dau) + ' đến ' + dd(mt.cuoi) + '</span>' : '') +
+      (TUAN_NAY && tuan !== TUAN_NAY
+        ? '<a class="chip nhay" href="#/lich-day?tuan=' + TUAN_NAY + '">Về tuần này</a>' : '') +
+    '</div>' +
     '<div class="card tt-wrap"><table><thead><tr><th></th>' +
     thu.map(t => '<th>' + (t===7 ? "Thứ Bảy" : "Thứ " + t) + '</th>').join("") + '</tr></thead><tbody>';
 
@@ -859,12 +881,13 @@ Trang["/lich-day"] = function(){
     thu.forEach(t => {
       const o = tim(t, ti);
       if (!o){
-        html += '<td><button class="slot-empty" data-them-tiet="' + t + '|' + ti + '">' + ic("plus",22) + '</button></td>';
+        html += '<td><button class="slot-empty" data-them-tiet="' + t + '|' + ti + '" ' +
+                'title="Thêm môn vào tiết này">' + ic("plus",22) + '</button></td>';
       } else {
-        const mn = DB.chuan(o.mon), m = DB.mon(mn), c = Kho.o(mn, o.lop, o.tuan);
+        const mn = DB.chuan(o.mon), m = DB.mon(mn), tw = o.tuan || tuan, c = Kho.o(mn, o.lop, tw);
         html += '<td><div class="slot" style="border-left-color:' + m.mau + '">' +
-          '<div class="s1">' + esc(c.ten || ("Tuần " + o.tuan)) + '</div>' +
-          '<div class="s2">' + esc(m.ten) + ' ' + o.lop + ' · Tuần ' + o.tuan + '</div>' +
+          '<div class="s1" style="color:' + m.mau + '">' + esc(m.ten) + ' ' + o.lop + '</div>' +
+          '<div class="s2">' + esc(c.ten || ("Tuần " + tw)) + '</div>' +
           '<div class="s3">' +
             (c.link ? '<a class="mini" href="' + esc(Drive.mo(c.link)) + '" target="_blank" rel="noopener" data-open="' + c.k + '">' + ic("play",13) + ' Dạy</a>'
                     : '<button class="mini blue" data-gan="' + c.k + '">' + ic("link",13) + ' Gắn link</button>') +
@@ -875,7 +898,8 @@ Trang["/lich-day"] = function(){
     html += '</tr>';
   });
   return html + '</tbody></table></div>' +
-    '<div class="banner">' + ic("calendar",16) + '<span>Lịch mẫu nằm trong <b>assets/js/data.js</b> (mục <b>lichDay</b>). Tiết thầy cô tự thêm lưu riêng trong máy này.</span></div>';
+    '<div class="banner">' + ic("calendar",16) + '<span>Thời khoá biểu mẫu nằm trong <b>assets/js/data.js</b> (mục <b>lichDay</b>). ' +
+    'Tiết thầy cô tự thêm lưu riêng trong máy này và cũng lặp lại cho mọi tuần.</span></div>';
 };
 
 /* ------------------------------ TRỢ LÝ AI ------------------------------ */
@@ -1024,6 +1048,9 @@ function ganSuKien(r){
     save("me"); capNhatHeader(); toast("Đã lưu thông tin", "ok");
   });
 
+  const lt = $("#ldTuan");
+  if (lt) lt.addEventListener("change", () => go("#/lich-day?tuan=" + lt.value));
+
   const tl = $("#tlGo");
   if (tl) tl.addEventListener("click", () => {
     const ten = $("#tlTen").value.trim() || "bài học hôm nay";
@@ -1166,15 +1193,14 @@ function hopThemTiet(vt){
       '<div class="field"><label>Môn</label><select class="input" id="ltMon">' +
         DB.dsMon().map(m => '<option value="' + m.id + '">' + esc(m.ten) + '</option>').join("") + '</select></div>' +
       '<div class="field"><label>Lớp</label><select class="input" id="ltLop">' +
-        [1,2,3,4,5].map(l => '<option value="' + l + '">Lớp ' + l + '</option>').join("") + '</select></div>' +
-      '<div class="field"><label>Tuần</label><select class="input" id="ltTuan">' +
-        Array.from({length:SO_TUAN},(x,i) => '<option value="' + (i+1) + '">Tuần ' + (i+1) + '</option>').join("") + '</select></div></div>',
+        [1,2,3,4,5].map(l => '<option value="' + l + '">Lớp ' + l + '</option>').join("") + '</select></div></div>' +
+      '<p class="hint">Tiết này lặp lại ở mọi tuần. Bài giảng hiện ra sẽ là bài của tuần thầy cô đang xem.</p>',
     foot: '<button class="btn-pill" data-close>Huỷ</button><button class="btn-blue" id="ltLuu">Lưu vào lịch</button>',
     onOpen(w){
       $("#ltLuu", w).addEventListener("click", () => {
         S.lich = S.lich.filter(x => !(x.thu === thu && x.tiet === tiet));
-        S.lich.push({ thu:thu, tiet:tiet, mon:$("#ltMon",w).value, lop:Number($("#ltLop",w).value),
-                      tuan:Number($("#ltTuan",w).value), tuTao:true });
+        S.lich.push({ thu:thu, tiet:tiet, mon:$("#ltMon",w).value,
+                      lop:Number($("#ltLop",w).value), tuTao:true });
         save("lich"); closeModal(); toast("Đã thêm vào lịch dạy", "ok"); render();
       });
     }

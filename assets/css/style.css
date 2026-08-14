@@ -361,8 +361,8 @@ main{flex:1;min-width:0;display:flex;flex-direction:column;gap:22px}
 .wcard .w-tools{opacity:1;top:9px;right:9px}
 
 /* Chỉ mục tuần */
-.week-index{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:10px}
-.wi{background:#fff;border:1px solid var(--vien);border-radius:13px;padding:11px 6px;text-align:center;box-shadow:var(--bong-1);transition:.15s;color:inherit}
+.week-index{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:10px;padding-top:10px}
+.wi{position:relative;background:#fff;border:1px solid var(--vien);border-radius:13px;padding:11px 6px;text-align:center;box-shadow:var(--bong-1);transition:.15s;color:inherit}
 .wi:hover{box-shadow:0 6px 16px rgba(30,64,120,.12);transform:translateY(-2px);color:inherit}
 .wi b{display:block;font-size:21px;font-weight:700;color:var(--chu-mo)}
 .wi small{font-size:11px;font-weight:700;color:var(--chu-mo)}
@@ -389,7 +389,9 @@ main{flex:1;min-width:0;display:flex;flex-direction:column;gap:22px}
 .tt-wrap td{vertical-align:top;width:14%}
 .slot{background:#f4f8fc;border:1px solid #e7eef5;border-left:4px solid #2f6fed;border-radius:12px;padding:10px;min-height:88px;display:flex;flex-direction:column;gap:4px}
 .slot .s1{font-size:13px;font-weight:700;line-height:1.3}
-.slot .s2{font-size:11.5px;font-weight:700;color:var(--chu-nhat)}
+.slot .s2{font-size:11.5px;font-weight:600;color:var(--chu-nhat);line-height:1.35}
+.chon-tuan{display:inline-flex;align-items:center;gap:8px;font-size:13.5px;font-weight:700;color:#334155}
+.chon-tuan .input{width:auto;padding:8px 12px;border-radius:999px;font-size:13.5px;font-weight:700}
 .slot .s3{display:flex;gap:6px;margin-top:auto;padding-top:6px}
 .slot-empty{width:100%;min-height:88px;background:#fbfdff;border:1.5px dashed #dbe6f0;border-radius:12px;color:#b6c6d8;display:flex;align-items:center;justify-content:center}
 .slot-empty:hover{border-color:#22a55b;color:#22a55b}
