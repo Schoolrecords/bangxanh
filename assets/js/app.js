@@ -529,15 +529,18 @@ const Trang = {};
 
 /* -------------------------------- TRANG CHỦ -------------------------------- */
 const slides = [
-  { h:'Trợ lý giáo án <em>trình chiếu PPT</em> cho giáo viên tiểu học',
+  { nhan:"Kho giáo án tiểu học",
+    h:'Trợ lý giáo án <em>trình chiếu PPT</em> cho giáo viên tiểu học',
     li:["Thiết kế đẹp – Dễ dùng – Bám sát chương trình GDPT mới",
         "Giúp thầy cô tiết kiệm thời gian, nâng cao hiệu quả giảng dạy."],
     btn:{ t:"Bắt đầu ngay", h:"#/giao-an" } },
-  { h:'Chọn môn → chọn lớp → chọn tuần là có ngay <em>bài giảng</em>',
+  { nhan:"13 môn · 5 khối lớp · " + SO_TUAN + " tuần",
+    h:'Chọn môn → chọn lớp → chọn tuần là có ngay <em>bài giảng</em>',
     li:["Mỗi môn đủ 5 khối lớp, mỗi lớp đủ " + SO_TUAN + " tuần học.",
         "Bấm vào ô tuần là mở thẳng file trên Google Drive."],
     btn:{ t:"Xem các môn học", h:"#/giao-an" } },
-  { h:'Lịch báo giảng ngay trong app, <em>đúng tiết đúng tuần</em>',
+  { nhan:"Lịch báo giảng",
+    h:'Lịch báo giảng ngay trong app, <em>đúng tiết đúng tuần</em>',
     li:["Xếp sẵn bài giảng cho từng tiết trong tuần.",
         "Đến giờ chỉ cần bấm Dạy là bài mở lên."],
     btn:{ t:"Xem lịch dạy", h:"#/lich-day" } }
@@ -548,9 +551,13 @@ function heroHTML(){
   const s = slides[slideIdx];
   return '' +
     '<div class="hero-content">' +
+      '<span class="hero-nhan">' + icf("leaf",12) + esc(s.nhan) + '</span>' +
       '<h1>' + s.h + '</h1>' +
       '<div class="checks">' + s.li.map(x => '<div>' + TICK + ' ' + esc(x) + '</div>').join("") + '</div>' +
-      '<a class="btn-cta" href="' + s.btn.h + '">' + esc(s.btn.t) + ' ' + ic("chevron",16) + '</a>' +
+      '<div class="hero-nut">' +
+        '<a class="btn-cta" href="' + s.btn.h + '">' + esc(s.btn.t) + ' ' + ic("arrow",16) + '</a>' +
+        '<a class="btn-ghost" href="#/huong-dan">' + ic("help",15) + ' Hướng dẫn dùng</a>' +
+      '</div>' +
       '<div class="features">' +
         '<div class="feature"><span class="ic" style="background:linear-gradient(135deg,#8b5cf6,#6366f1)">' + ic("shield",19) + '</span><span class="lb">Chuẩn chương trình GDPT 2018</span></div>' +
         '<div class="feature"><span class="ic" style="background:linear-gradient(135deg,#22c55e,#16a34a)">' + ic("edit",19) + '</span><span class="lb">Dễ chỉnh sửa linh hoạt</span></div>' +

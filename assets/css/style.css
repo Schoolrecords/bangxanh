@@ -29,7 +29,15 @@
   --bong-3:0 14px 30px rgba(14,58,40,.16);
   --bo:16px;              /* bo góc thẻ */
   --bo-lon:20px;
+  /* Font riêng cho tiêu đề — Be Vietnam Pro dựng riêng cho tiếng Việt nên
+     dấu thanh không chồng lên chữ khi phóng to. Chữ thân bài giữ nguyên. */
+  --font-td:'Be Vietnam Pro','UTM Avo','Nunito','Segoe UI',sans-serif;
 }
+
+/* Hệ tiêu đề dùng chung một font, một cách giãn chữ */
+.hero h1,.sec-title h2,.page-head h1,.subj-hero h1,.hk h2,.logo-name,
+.tuannay .txt h3,.homeroom .info h3,.modal-head h3,.guide h3,.empty-box h4{
+  font-family:var(--font-td);letter-spacing:-.018em}
 
 /* ===================== PHẦN 1 — TRANG CHỦ ===================== */
 *{box-sizing:border-box}
@@ -123,17 +131,47 @@ main{flex:1;min-width:0;display:flex;flex-direction:column;gap:22px}
 .user b{font-weight:700;font-size:14.5px;white-space:nowrap}
 .user .chev{color:var(--chu-nhat)}
 
-/* --- Hero --- */
-.hero{position:relative;border-radius:20px;overflow:hidden;box-shadow:var(--bong-1);background:linear-gradient(100deg,#f2f7fe 0%,#e3edfb 55%,#dbe8fa 100%);padding:34px 0 26px 34px;min-height:340px}
+/* --- Hero ---
+   Nền nhiều lớp: hai quầng sáng mềm (cam ở góc trên phải sau ảnh, xanh ở
+   góc dưới trái) chồng lên nền chuyển sắc, tạo chiều sâu thay vì một mảng
+   phẳng.                                                                */
+.hero{position:relative;border-radius:22px;overflow:hidden;box-shadow:var(--bong-1);
+  background:
+    radial-gradient(660px 420px at 86% 8%, rgba(255,206,150,.55), transparent 62%),
+    radial-gradient(520px 400px at 2% 96%, rgba(160,232,196,.5), transparent 64%),
+    linear-gradient(104deg,#f6faff 0%,#e7effd 54%,#dde9fb 100%);
+  padding:36px 0 28px 36px;min-height:352px}
 .hero-img{position:absolute;right:0;bottom:0;width:min(448px,44%);height:auto;object-fit:cover;-webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 14%);mask-image:linear-gradient(90deg,transparent 0%,#000 14%)}
-.hero-content{position:relative;max-width:min(430px,50%);display:flex;flex-direction:column;align-items:flex-start}
-.hero h1{margin:0 0 16px;font-size:34px;line-height:1.3;font-weight:700;color:#1d3f74;letter-spacing:-.3px}
-.hero h1 em{font-style:normal;color:#ED6C47}
-.checks{display:flex;flex-direction:column;gap:8px;margin-bottom:20px}
-.checks div{display:flex;align-items:center;gap:9px;font-size:14px;font-weight:700;color:#33507a}
-.check-ic{width:17px;height:17px;flex-shrink:0}
-.btn-cta{display:flex;align-items:center;gap:10px;background:linear-gradient(90deg,#2fae62,#22a55b);color:#fff;border-radius:999px;padding:13px 26px;font-weight:700;font-size:16px;box-shadow:0 5px 14px rgba(34,165,91,.35);margin-bottom:28px}
-.btn-cta:hover{filter:brightness(1.05);color:#fff}
+.hero-content{position:relative;max-width:min(470px,52%);display:flex;flex-direction:column;align-items:flex-start}
+
+/* Nhãn nhỏ phía trên tiêu đề */
+.hero-nhan{display:inline-flex;align-items:center;gap:7px;margin-bottom:15px;
+  background:rgba(255,255,255,.8);border:1px solid rgba(255,255,255,.95);border-radius:999px;
+  padding:6px 15px;font-family:var(--font-td);font-size:11.5px;font-weight:700;
+  letter-spacing:.09em;text-transform:uppercase;color:#2a5da8;
+  box-shadow:0 2px 8px rgba(14,58,40,.08)}
+.hero-nhan svg{color:var(--xanh-sang)}
+
+.hero h1{margin:0 0 18px;font-family:var(--font-td);
+  font-size:clamp(26px,2.9vw,41px);line-height:1.26;font-weight:800;
+  color:#12335f;letter-spacing:-.022em;text-wrap:balance}
+/* Cụm chữ nhấn tô chuyển sắc đúng bộ màu logo PowerPoint.
+   nowrap để cụm nhấn không bị ngắt đôi giữa hai dòng. */
+.hero h1 em{font-style:normal;white-space:nowrap;
+  background:linear-gradient(100deg,#F2712F 0%,#E8434F 50%,#E93E82 100%);
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;color:transparent}
+
+.checks{display:flex;flex-direction:column;gap:9px;margin-bottom:24px}
+.checks div{display:flex;align-items:flex-start;gap:9px;font-size:14.5px;font-weight:600;color:#2f4e79;line-height:1.5}
+.check-ic{width:18px;height:18px;flex-shrink:0;margin-top:1px}
+.hero-nut{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:30px}
+.btn-cta{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(100deg,#34b86a,#16a34a);color:#fff;border-radius:999px;padding:14px 28px;font-family:var(--font-td);font-weight:700;font-size:15.5px;box-shadow:0 6px 18px rgba(22,163,74,.36)}
+.btn-cta:hover{filter:brightness(1.06);color:#fff;box-shadow:0 8px 22px rgba(22,163,74,.44)}
+.btn-ghost{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.85);
+  border:1.5px solid rgba(42,93,168,.22);color:#2a5da8;border-radius:999px;
+  padding:12px 22px;font-family:var(--font-td);font-weight:700;font-size:14.5px}
+.btn-ghost:hover{background:#fff;border-color:#2a5da8;color:#2a5da8}
 .features{display:flex;gap:clamp(10px,2vw,26px);flex-wrap:wrap;max-width:100%}
 .feature{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:8px;width:min(96px,28%);text-align:center}
 .feature .ic{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;color:#fff}
