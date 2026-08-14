@@ -8,7 +8,7 @@
    bản cũ. File bài giảng nằm trên Google Drive nên vẫn cần mạng để mở.
    ⚠ Sửa file này xong nhớ tăng số PHIEN_BAN để máy người dùng nhận bản mới.
    ========================================================================= */
-const PHIEN_BAN = "bangxanh-v1";
+const PHIEN_BAN = "bangxanh-v2";
 const VO_APP = [
   "./",
   "./index.html",
