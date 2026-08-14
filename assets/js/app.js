@@ -402,9 +402,12 @@ function theMon(m, href, nhan, lop){
   '</a>';
 }
 
-/* Thanh tiến độ nhỏ dùng chung */
+/* Thanh tiến độ nhỏ dùng chung.
+   Đã có bài thì luôn vẽ một vạch mỏng, tránh trường hợp 8/1855 làm tròn
+   thành 0% rồi thanh trông như chưa có gì.                              */
 function thanhTienDo(co, tong, grad){
-  const pct = tong ? Math.round(co * 100 / tong) : 0;
+  let pct = tong ? Math.round(co * 100 / tong) : 0;
+  if (co > 0 && pct < 3) pct = 3;
   return '<span class="prog"><i style="width:' + pct + '%;background:' + grad + '"></i></span>';
 }
 
@@ -455,22 +458,32 @@ function theTap(t){
     '<div class="ct">' + (n ? n + " giáo án" : "Chưa gắn nhãn") + '</div></a>';
 }
 
-/* Ô TUẦN dùng trong trang 35 tuần */
+/* Làm tối một mã màu #rrggbb — dùng vẽ cạnh dưới cho ô tuần nổi khối */
+function toiMau(hex, k){
+  const h = String(hex || "").replace("#","");
+  if (!/^[0-9a-f]{6}$/i.test(h)) return "#c9d6e4";
+  const n = parseInt(h, 16);
+  const p = x => Math.round(x * k).toString(16).padStart(2,"0");
+  return "#" + p((n >> 16) & 255) + p((n >> 8) & 255) + p(n & 255);
+}
+
+/* Ô TUẦN dùng trong trang 35 tuần — khối nhỏ, nổi, bấm được */
 function oTuan(o){
   const m = DB.mon(o.mon), fav = S.fav.indexOf(o.k) >= 0;
   const nay = o.tuan === TUAN_NAY;
   const tools = '<div class="w-tools' + (fav ? " show" : "") + '">' +
-      (o.link ? '<button class="w-btn" data-preview="' + o.k + '" title="Xem trước trong app">' + ic("eye",13) + '</button>' : '') +
-      '<button class="w-btn' + (fav ? " on" : "") + '" data-fav="' + o.k + '" title="Ghim vào Yêu thích">' + icf("heart",13) + '</button>' +
+      (o.link ? '<button class="w-btn" data-preview="' + o.k + '" title="Xem trước trong app">' + ic("eye",12) + '</button>' : '') +
+      '<button class="w-btn' + (fav ? " on" : "") + '" data-fav="' + o.k + '" title="Ghim vào Yêu thích">' + icf("heart",12) + '</button>' +
     '</div>';
   const than =
     (nay ? '<span class="nhan-nay">Tuần này</span>' : '') +
-    '<div class="num" style="background:' + (o.link ? m.grad : "#e8eef6") + (o.link ? "" : ";color:#94a3b8") + '">' + o.tuan + '</div>' +
-    '<div class="lb" style="color:' + (o.link ? m.mau : "#64748b") + '">Tuần ' + o.tuan + '</div>' +
-    '<div class="st"><span class="dot"></span>' + (o.link ? "Mở Drive" : "Sắp có") + '</div>' +
-    (o.ten ? '<div class="tenbai">' + esc(o.ten) + '</div>' : '');
+    '<svg class="ppt-ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#f-ppt"/></svg>' +
+    '<span class="lb">Tuần ' + o.tuan + '</span>' +
+    '<span class="st"><i class="dot"></i>' + (o.link ? "Mở Drive" : "Sắp có") + '</span>' +
+    (o.ten ? '<span class="tenbai">' + esc(o.ten) + '</span>' : '');
+  const mau = ' style="--mau:' + m.mau + ';--canh:' + toiMau(m.mau, .70) + '"';
   const boc = (n, ben) => '<div class="w-item ' + n + (nay ? " nay" : "") + '" id="tuan-' + o.tuan + '"' +
-    (nay ? ' style="--mau:' + m.mau + '"' : '') + '>' + ben + tools + '</div>';
+    (o.link || nay ? mau : "") + '>' + ben + tools + '</div>';
   if (o.link)
     return boc("has", '<a class="week has" href="' + esc(Drive.mo(o.link)) + '" target="_blank" rel="noopener" data-open="' + o.k + '">' + than + '</a>');
   return boc("none", '<button class="week none" data-gan="' + o.k + '" title="Gắn link Google Drive">' + than + '</button>');

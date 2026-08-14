@@ -274,38 +274,58 @@ main{flex:1;min-width:0;display:flex;flex-direction:column;gap:22px}
 .hk .bar{width:4px;height:22px;border-radius:4px;background:#22a55b}
 .hk h2{margin:0;font-size:19px;font-weight:700}
 .hk .ct{font-size:13px;font-weight:700;color:var(--chu-mo)}
-.weeks{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;padding-top:10px}
-.week{position:relative;background:#fff;border:1px solid var(--vien);border-radius:14px;padding:14px 10px 12px;text-align:center;box-shadow:var(--bong-1);transition:.15s;display:block;color:inherit;width:100%;height:100%;font:inherit}
-.week:hover{box-shadow:0 8px 20px rgba(30,64,120,.14);transform:translateY(-2px);color:inherit}
-.week .num{width:44px;height:44px;border-radius:13px;margin:0 auto 8px;display:flex;align-items:center;justify-content:center;font-size:19px;font-weight:700;color:#fff}
-.week .lb{font-size:13.5px;font-weight:700}
-.week .st{display:flex;align-items:center;justify-content:center;gap:5px;font-size:11.5px;font-weight:700;color:var(--chu-mo);margin-top:4px}
-.week .st .dot{width:7px;height:7px;border-radius:99px;background:#cbd5e1}
+/* Ô tuần: khối nhỏ, có cạnh dưới dày nên nhìn nổi lên khỏi trang;
+   rê chuột thì nhấc cao, bấm xuống thì lún như nút bấm thật.        */
+.weeks{display:grid;grid-template-columns:repeat(auto-fill,minmax(98px,1fr));gap:11px;padding-top:12px}
+.w-item{position:relative}
+.week{position:relative;display:flex;flex-direction:column;align-items:center;gap:4px;
+  width:100%;height:100%;padding:11px 7px 10px;border-radius:15px;font:inherit;text-align:center;
+  background:linear-gradient(180deg,#fff 0%,#f7fafd 100%);border:1px solid var(--vien);color:inherit;
+  box-shadow:0 5px 0 var(--canh,#d3e0ee), 0 7px 14px rgba(30,64,120,.13);
+  transition:transform .13s ease,box-shadow .13s ease,border-color .13s ease}
+.week:hover{transform:translateY(-3px);color:inherit;
+  box-shadow:0 8px 0 var(--canh,#c6d6e8), 0 15px 26px rgba(30,64,120,.2)}
+.week:active{transform:translateY(4px);
+  box-shadow:0 1px 0 var(--canh,#d3e0ee), 0 2px 4px rgba(30,64,120,.16)}
+
+.ppt-ic{width:30px;height:30px;display:block;flex-shrink:0}
+.week .lb{font-size:13px;font-weight:700;line-height:1.2}
+.week.has .lb{color:var(--mau)}
+.week .st{display:flex;align-items:center;justify-content:center;gap:4px;font-size:10.5px;font-weight:700;color:var(--chu-mo)}
+.week .st .dot{width:6px;height:6px;border-radius:99px;background:#cbd5e1;display:block;flex-shrink:0}
 .week.has .st{color:var(--xanh)}
 .week.has .st .dot{background:#22c55e}
-.week.none{background:#fbfdff;border-style:dashed;border-color:#dbe6f0}
-.week.none:hover{border-color:var(--xanh-sang);border-style:solid;box-shadow:var(--bong-2)}
+.week .tenbai{font-size:10px;font-weight:600;color:var(--chu-mo);line-height:1.3;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+
+/* Tuần chưa gắn link: khối thấp hơn một bậc, viền đứt, icon xám */
+.week.none{background:linear-gradient(180deg,#fdfeff 0%,#f2f7fc 100%);
+  border-style:dashed;border-color:#d3e0ee;
+  box-shadow:0 3px 0 #e2eaf4, 0 4px 9px rgba(30,64,120,.08)}
+.week.none .ppt-ic{filter:grayscale(1);opacity:.42}
+.week.none:hover{border-style:solid;border-color:var(--xanh-sang);
+  box-shadow:0 7px 0 #bfe0cd, 0 14px 22px rgba(30,64,120,.16)}
+.week.none:hover .ppt-ic{filter:none;opacity:.8}
+.week.none:active{transform:translateY(4px);box-shadow:0 1px 0 #e2eaf4, 0 2px 4px rgba(30,64,120,.14)}
 
 /* Ô tuần đang dạy trong năm học */
-.w-item{position:relative}
-.w-item.nay .week{border-color:var(--mau,#22a55b);border-width:2px;padding:13px 9px 11px;
-  box-shadow:0 4px 14px rgba(30,64,120,.16);                              /* dự phòng cho trình duyệt cũ */
-  box-shadow:0 0 0 4px color-mix(in srgb,var(--mau,#22a55b) 14%,transparent)}
-.w-item.nay .week.none{border-style:solid;background:#fff}
-.nhan-nay{position:absolute;left:50%;top:-9px;transform:translateX(-50%);white-space:nowrap;
-  background:var(--mau,#22a55b);color:#fff;font-size:10px;font-weight:700;letter-spacing:.3px;
-  border-radius:999px;padding:2px 10px;box-shadow:0 3px 8px rgba(30,64,120,.22);z-index:2}
+.w-item.nay .week{border-color:var(--mau,#22a55b);border-width:2px;padding:10px 6px 9px;background:#fff}
+.w-item.nay .week.none{border-style:solid}
+.nhan-nay{position:absolute;left:50%;top:-8px;transform:translateX(-50%);white-space:nowrap;
+  background:var(--mau,#22a55b);color:#fff;font-size:9.5px;font-weight:700;letter-spacing:.3px;
+  border-radius:999px;padding:2px 9px;box-shadow:0 3px 8px rgba(30,64,120,.22);z-index:2}
 .w-item.chop .week{animation:chop 1.6s ease}
 @keyframes chop{
-  0%,100%{box-shadow:0 0 0 4px color-mix(in srgb,var(--mau,#22a55b) 14%,transparent)}
-  30%,70%{box-shadow:0 0 0 10px color-mix(in srgb,var(--mau,#22a55b) 26%,transparent)}
+  0%,100%{box-shadow:0 3px 0 var(--canh,#dde7f2), 0 5px 11px rgba(30,64,120,.10)}
+  30%,70%{box-shadow:0 6px 0 var(--canh,#cfdcea), 0 0 0 8px rgba(34,165,91,.22)}
 }
-.week .tenbai{font-size:11px;font-weight:600;color:var(--chu-mo);margin-top:5px;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+
 /* nút phụ trên ô tuần — ẩn cho gọn, hiện khi rê chuột hoặc trên điện thoại */
-.w-tools{position:absolute;top:7px;right:7px;display:flex;gap:4px;opacity:0;transition:.15s}
-.week:hover .w-tools,.w-tools:focus-within,.w-tools.show{opacity:1}
-.w-btn{width:24px;height:24px;border-radius:8px;background:#f1f5f9;color:var(--chu-mo);display:flex;align-items:center;justify-content:center}
-.w-btn svg{width:13px;height:13px}
+.w-tools{position:absolute;top:5px;right:5px;display:flex;gap:3px;opacity:0;transition:.15s;
+  background:rgba(255,255,255,.94);border-radius:999px;padding:2px;box-shadow:0 1px 4px rgba(30,64,120,.16)}
+.week:hover+.w-tools,.w-item:hover .w-tools,.w-tools:focus-within,.w-tools.show{opacity:1}
+.w-btn{width:21px;height:21px;border-radius:999px;background:#f1f5f9;color:var(--chu-mo);display:flex;align-items:center;justify-content:center}
+.w-btn svg{width:12px;height:12px}
 .w-btn:hover{background:#e8f6ee;color:var(--xanh)}
 .w-btn.on{color:#ec4899;background:#fdf2f8}
 .w-btn.on svg{fill:currentColor;stroke:none}
@@ -485,7 +505,7 @@ code{background:#eef4fa;border:1px solid var(--vien-dam);border-radius:6px;paddi
   .hero-stats{justify-content:center}
   .hero-prog{max-width:100%;text-align:left}
   .grades{grid-template-columns:repeat(2,1fr);gap:12px}
-  .weeks{grid-template-columns:repeat(3,1fr);gap:10px}
+  .weeks{grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:10px}
   .wlist{grid-template-columns:1fr}
   .guides{grid-template-columns:1fr}
   .stats{grid-template-columns:repeat(2,1fr)}
@@ -495,7 +515,7 @@ code{background:#eef4fa;border:1px solid var(--vien-dam);border-radius:6px;paddi
 }
 @media (max-width:520px){
   .quick{grid-template-columns:repeat(2,1fr)}
-  .weeks{grid-template-columns:repeat(2,1fr)}
+  .weeks{grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:9px}
   .grades{grid-template-columns:1fr}
   .subjects{grid-template-columns:1fr}
 }
