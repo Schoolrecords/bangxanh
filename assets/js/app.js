@@ -264,7 +264,7 @@ const TUAN_NAY = tuanHienTai();
 function trangThaiNamHoc(){
   const d0 = thuHaiDauNam();
   if (!d0) return { tuan:0, nhan:"Chưa đặt ngày khai giảng",
-                    mo:"Mở file assets/js/data.js, mục namHoc để đặt ngày khai giảng." };
+                    mo:"Chưa đặt ngày khai giảng nên app chưa biết đang ở tuần thứ mấy." };
   const dd = x => x.toLocaleDateString("vi-VN", { day:"2-digit", month:"2-digit" });
 
   if (TUAN_NAY){
@@ -285,7 +285,7 @@ function trangThaiNamHoc(){
                   mo:"Từ " + dd(ngay(k.tu)) + " đến " + dd(ngay(k.den)) + ". Hết nghỉ app sẽ tự nhảy sang tuần kế tiếp." };
 
   return { tuan:0, nhan:"Đã hết " + SO_TUAN + " tuần",
-           mo:"Năm học " + (NH.ten || "") + " đã xong. Cập nhật ngày khai giảng năm mới trong file data.js." };
+           mo:"Năm học " + (NH.ten || "") + " đã xong. Chờ cập nhật lịch năm học mới." };
 }
 
 function moTaThoiGian(ts){
@@ -342,8 +342,8 @@ function hopGanLink(k){
         '<div class="field"><label>Link Google Drive</label>' +
           '<input class="input" id="gLink" value="' + esc(o.link) + '" placeholder="https://drive.google.com/file/d/..../view?usp=sharing">' +
           '<div id="gCheck" style="margin-top:8px"></div>' +
-          '<p class="hint">Link này lưu trong máy đang dùng. Muốn mọi máy đều thấy thì thêm vào file ' +
-          '<b>assets/js/links.js</b> theo mẫu: <code>' + esc(m.id) + ' → ' + o.lop + ' → ' + o.tuan + '</code></p></div>' +
+          '<p class="hint">Link gắn ở đây chỉ lưu trên máy đang dùng, máy khác sẽ không thấy. ' +
+          'Muốn cả trường dùng chung thì gửi link cho người phụ trách kho giáo án.</p></div>' +
       '</div>',
     foot: '<button class="btn-pill" data-close>Huỷ</button>' +
           (S.them[k] ? '<button class="btn-red" id="gXoa">Gỡ link</button>' : '') +
@@ -631,8 +631,8 @@ Trang["/"] = function(){
   '</section>' +
 
   (tong === 0
-    ? '<div class="banner warn">' + ic("link",16) + '<span><b>Chưa có link bài giảng nào.</b> Mở file ' +
-      '<b>assets/js/links.js</b> rồi dán link Google Drive vào đúng môn – lớp – tuần. <a href="#/huong-dan">Xem hướng dẫn</a></span></div>'
+    ? '<div class="banner warn">' + ic("book-open",16) + '<span><b>Kho giáo án đang trống.</b> ' +
+      'Bài giảng sẽ được bổ sung dần theo từng môn và từng tuần. <a href="#/huong-dan">Xem hướng dẫn dùng app</a></span></div>'
     : '<div class="banner">' + ic("book-open",16) + '<span>Chỉ 1 bộ sách: <b>' + esc(D.app.boSachChinh) + '</b> – Đồng hành cùng thầy cô trên mọi tiết dạy.</span>' +
       icf("leaf",15) + '</div>');
 };
@@ -679,9 +679,8 @@ Trang["/mon"] = function(r){
     })).join("") + '</div></section>' +
 
   (co === 0
-    ? '<div class="banner warn">' + ic("link",16) + '<span>Môn <b>' + esc(m.ten) + '</b> chưa có link nào. ' +
-      'Mở file <b>assets/js/links.js</b>, tìm mã môn <b>' + esc(m.id) + '</b> rồi dán link vào đúng lớp – tuần. ' +
-      '<a href="#/huong-dan">Xem hướng dẫn</a></span></div>'
+    ? '<div class="banner warn">' + ic("book-open",16) + '<span>Môn <b>' + esc(m.ten) + '</b> chưa có bài giảng nào. ' +
+      'Các tuần sẽ được bổ sung dần. <a href="#/huong-dan">Xem hướng dẫn dùng app</a></span></div>'
     : '');
 };
 
@@ -738,9 +737,9 @@ Trang["/bo-suu-tap"] = function(r){
   return crumb([{ten:"Bộ sưu tập",href:"#/bo-suu-tap"},{ten:t.ten}]) +
     pageHead(t.ten, t.moTa) +
     (ds.length ? dsBai(ds)
-      : '<div class="card pad"><h3 style="font-size:15px;font-weight:700;margin-bottom:8px">Chưa có bài nào trong bộ sưu tập này</h3>' +
-        '<p class="hint" style="margin:0 0 12px">Trong file <b>assets/js/links.js</b>, viết dạng đầy đủ để xếp bài vào đây:</p>' +
-        '<pre class="code">5: { link: \'https://...\', ten: \'Tên bài\', tap: \'' + esc(t.id) + '\' }</pre></div>');
+      : hopTrong("Bộ sưu tập này chưa có bài",
+          "Các bài giảng phù hợp sẽ được xếp vào đây khi kho được bổ sung. " +
+          "Thầy cô xem tạm ở mục Giáo án theo môn học."));
 };
 
 /* -------------------------------- TUẦN HỌC -------------------------------- */
@@ -763,7 +762,7 @@ Trang["/tuan-hoc"] = function(r){
   return crumb([{ten:"Tuần học",href:"#/tuan-hoc"},{ten:"Tuần "+n}]) +
     pageHead("Tuần " + n + (n===TUAN_NAY ? " — tuần này" : ""), "Toàn bộ bài giảng đã gắn link của tuần này.") +
     (ds.length ? dsBai(ds) : hopTrong("Tuần " + n + " chưa có bài giảng",
-      "Chưa môn nào gắn link cho tuần này. Thêm link tuần <b>" + n + "</b> trong file assets/js/links.js."));
+      "Chưa môn nào có bài cho tuần này. Thầy cô chọn tuần khác ở trên, hoặc vào một môn cụ thể để xem các tuần đã có."));
 };
 
 /* -------------------------------- LỚP HỌC -------------------------------- */
@@ -905,8 +904,8 @@ Trang["/lich-day"] = function(r){
     html += '</tr>';
   });
   return html + '</tbody></table></div>' +
-    '<div class="banner">' + ic("calendar",16) + '<span>Thời khoá biểu mẫu nằm trong <b>assets/js/data.js</b> (mục <b>lichDay</b>). ' +
-    'Tiết thầy cô tự thêm lưu riêng trong máy này và cũng lặp lại cho mọi tuần.</span></div>';
+    '<div class="banner">' + ic("calendar",16) + '<span>Tiết thầy cô tự thêm được lưu riêng trong máy này ' +
+    'và lặp lại cho mọi tuần — không phải xếp lại mỗi tuần.</span></div>';
 };
 
 /* ------------------------------ TRỢ LÝ AI ------------------------------ */
@@ -957,27 +956,34 @@ Trang["/huong-dan"] = function(){
       h.buoc.map((b,i) => '<li><span class="num" style="background:' + h.mau + '">' + (i+1) + '</span><span>' + esc(b) + '</span></li>').join("") +
       '</ol></div>').join("") + '</div>' +
 
-    '<section>' + secHead("Mẫu dán link vào file assets/js/links.js") +
-      '<div class="card pad">' +
-        '<pre class="code">window.DRIVE_LINKS = {\n' +
-        '  toan: {\n' +
-        '    3: {\n' +
-        '      1: \'https://drive.google.com/file/d/XXXX/view?usp=sharing\',\n' +
-        '      2: \'https://docs.google.com/presentation/d/XXXX/edit\',\n' +
-        '      5: { link: \'https://...\', ten: \'Bài 12: Bảng nhân 7\', tap: \'stem\' }\n' +
-        '    }\n' +
-        '  }\n' +
-        '};</pre>' +
-        '<p class="hint">Đọc là: môn <b>toan</b> → lớp <b>3</b> → tuần <b>1</b>. ' +
-        'Mã môn có sẵn ở đầu file links.js.</p>' +
-      '</div></section>' +
+    '<section>' + secHead("Ký hiệu trên ô tuần") +
+      '<div class="card pad"><ul class="kyhieu">' +
+        '<li><span class="kh"><svg class="ppt-ic" viewBox="0 0 32 32"><use href="#f-ppt"/></svg></span>' +
+          '<div><b>Biểu tượng màu</b><span>Tuần này đã có bài giảng. Bấm vào là mở trên Google Drive.</span></div></li>' +
+        '<li><span class="kh mo"><svg class="ppt-ic" viewBox="0 0 32 32"><use href="#f-ppt"/></svg></span>' +
+          '<div><b>Biểu tượng xám, viền đứt</b><span>Tuần chưa có bài giảng. Kho đang được bổ sung dần.</span></div></li>' +
+        '<li><span class="kh"><span class="nhan-mau">Tuần này</span></span>' +
+          '<div><b>Nhãn “Tuần này”</b><span>Đúng tuần đang dạy của năm học, tính từ ngày khai giảng.</span></div></li>' +
+        '<li><span class="kh"><span class="w-btn">' + ic("eye",12) + '</span></span>' +
+          '<div><b>Hình con mắt</b><span>Xem trước bài giảng ngay trong app, có nút tải xuống.</span></div></li>' +
+        '<li><span class="kh"><span class="w-btn on">' + icf("heart",12) + '</span></span>' +
+          '<div><b>Hình trái tim</b><span>Ghim bài vào mục Yêu thích để lần sau mở nhanh.</span></div></li>' +
+      '</ul></div></section>' +
 
     '<section>' + secHead("Câu hỏi hay gặp") +
       '<div class="card pad"><ul class="faq">' +
-        '<li><b>Mở bài giảng báo “Bạn cần quyền truy cập”?</b><span>File trên Drive đang để chế độ Bị hạn chế. Chia sẻ lại ở mức “Bất kỳ ai có đường liên kết – Người xem”.</span></li>' +
-        '<li><b>Máy khác có thấy link tôi gắn trong app không?</b><span>Không. Link gắn bằng nút trong app chỉ lưu ở máy này. Muốn dùng chung, thêm vào file links.js.</span></li>' +
-        '<li><b>Lớp không có mạng thì sao?</b><span>Bấm nút con mắt trên ô tuần → Tải xuống trước ở nhà để có bản dự phòng.</span></li>' +
-        '<li><b>Trường dùng bộ sách khác?</b><span>Link là do thầy cô tự gắn nên dùng bộ sách nào cũng được.</span></li>' +
+        '<li><b>Mở bài giảng báo “Bạn cần quyền truy cập”?</b><span>File đó trên Google Drive đang để chế độ hạn chế. ' +
+          'Thầy cô báo lại người phụ trách kho giáo án để chia sẻ lại ở mức “Bất kỳ ai có đường liên kết – Người xem”.</span></li>' +
+        '<li><b>Tuần tôi cần dạy chưa có bài?</b><span>Kho giáo án được bổ sung dần theo từng môn và từng tuần. ' +
+          'Thầy cô xem thanh lọc “Đã có bài” ở đầu trang tuần để biết môn đó đang có những tuần nào.</span></li>' +
+        '<li><b>Lớp không có mạng thì sao?</b><span>Bấm hình con mắt trên ô tuần rồi bấm Tải xuống trước ở nhà. ' +
+          'Cài Bảng Xanh lên máy thì mất mạng vẫn mở được app để xem lịch dạy.</span></li>' +
+        '<li><b>Dùng trên điện thoại hay máy tính bảng được không?</b><span>Được. Giao diện tự thu gọn theo màn hình, ' +
+          'và cài lên màn hình chính được như một app.</span></li>' +
+        '<li><b>Bài ghim và lịch dạy của tôi có sang máy khác không?</b><span>Không. Yêu thích, lịch sử và lịch dạy ' +
+          'lưu riêng trong máy đang dùng. Đổi máy thì xếp lại.</span></li>' +
+        '<li><b>Trường dùng bộ sách khác?</b><span>Bài giảng trong kho bám chương trình GDPT 2018 nên khung nội dung dùng chung được. ' +
+          'Bộ sách chính đang dùng ghi ở cuối trang chủ.</span></li>' +
       '</ul></div></section>';
 };
 
@@ -992,13 +998,13 @@ Trang["/tai-khoan"] = function(){
       '<div class="stat"><b>' + S.fav.length + '</b><span>Bài đã ghim</span></div>' +
       '<div class="stat"><b>' + them + '</b><span>Link gắn trong máy</span></div>' +
     '</div>' +
-    (Kho.loi.length ? '<div class="banner warn"><span><b>Có ' + Kho.loi.length + ' chỗ trong links.js chưa đúng:</b><br>' +
+    (Kho.loi.length ? '<div class="banner warn"><span><b>Có ' + Kho.loi.length + ' link chưa dùng được:</b><br>' +
       Kho.loi.map(esc).join("<br>") + '</span></div>' : "") +
     (TUAN_NAY
       ? '<div class="banner">' + ic("calendar",16) + '<span>Năm học <b>' + esc(NH.ten || "") +
         '</b> · đang là <b>tuần ' + TUAN_NAY + '</b>.</span></div>'
       : '<div class="banner warn">' + ic("calendar",16) + '<span><b>' + esc(trangThaiNamHoc().nhan) + '.</b> ' +
-        esc(trangThaiNamHoc().mo) + ' Sửa mục <b>namHoc</b> trong file <b>assets/js/data.js</b>.</span></div>') +
+        esc(trangThaiNamHoc().mo) + '</span></div>') +
     '<section>' + secHead("Thông tin giáo viên") +
       '<div class="card pad"><form class="form" id="formMe">' +
         '<div class="g3">' +
@@ -1011,7 +1017,7 @@ Trang["/tai-khoan"] = function(){
       '<div class="card pad">' +
         '<p class="hint" style="margin:0 0 14px">Link gắn nhanh, bài ghim, lịch sử và lịch dạy đang lưu trong trình duyệt của máy này.</p>' +
         '<div class="row-btn">' +
-          '<button class="btn-pill" data-act="xuat">' + ic("download",15) + ' Xuất link ra dạng dán vào links.js</button>' +
+          '<button class="btn-pill" data-act="xuat">' + ic("download",15) + ' Xuất danh sách link đã gắn</button>' +
           '<button class="btn-red" data-act="xoa-het">' + ic("trash",15) + ' Xoá dữ liệu trong máy</button>' +
         '</div></div></section>';
 };
@@ -1138,7 +1144,8 @@ document.addEventListener("click", e => {
   if (act === "xuat"){
     openModal({
       title: "Xuất link đã gắn trong máy",
-      body: '<p class="hint" style="margin:0 0 10px">Chép đoạn dưới đây, dán đè vào <b>window.DRIVE_LINKS</b> trong file <b>assets/js/links.js</b>.</p>' +
+      body: '<p class="hint" style="margin:0 0 10px">Đây là các link thầy cô đã tự gắn trên máy này. ' +
+            'Gửi đoạn dưới đây cho người phụ trách kho giáo án để đưa vào bản dùng chung cho cả trường.</p>' +
             '<textarea class="input code" style="min-height:220px" readonly>' + esc(xuatLinks()) + '</textarea>',
       foot: '<button class="btn-pill" data-close>Đóng</button>' +
             '<button class="btn-blue" data-act="copy" data-text="' + esc(xuatLinks()) + '">' + ic("copy",15) + ' Sao chép</button>'
@@ -1149,7 +1156,7 @@ document.addEventListener("click", e => {
     openModal({
       title: "Xoá dữ liệu trong máy",
       body: '<p style="font-size:14px;font-weight:600;line-height:1.6">Xoá toàn bộ link gắn nhanh, bài đã ghim, lịch sử và lịch dạy trên máy này. ' +
-            'File links.js và file trên Google Drive <b>không bị ảnh hưởng</b>.</p>',
+            'Kho giáo án chung và file trên Google Drive <b>không bị ảnh hưởng</b>.</p>',
       foot: '<button class="btn-pill" data-close>Không xoá</button><button class="btn-red" id="okHet">Xoá hết</button>',
       onOpen(w){
         $("#okHet", w).addEventListener("click", () => {
@@ -1276,6 +1283,6 @@ Kho.nap();
 capNhatHeader();
 veCotPhu();
 render();
-if (Kho.loi.length) toast(Kho.loi.length + " chỗ trong links.js chưa đúng — xem mục Tài khoản", "err");
+if (Kho.loi.length) toast(Kho.loi.length + " link chưa dùng được — xem mục Tài khoản", "err");
 
 })();

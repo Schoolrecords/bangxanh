@@ -63,36 +63,39 @@ window.BANG_XANH = {
     { thu:6, tiet:5, mon:"hdtn",   lop:3 }
   ],
 
-  /* ---------- TÀI LIỆU HƯỚNG DẪN ---------- */
+  /* ---------- TÀI LIỆU HƯỚNG DẪN ----------
+     Viết cho thầy cô dùng app, không nói tới file hay mã nguồn.
+     Phần kỹ thuật nằm ở HUONG-DAN-SU-DUNG.md trong thư mục app.        */
   huongDan: [
-    { ten:"Lấy link bài giảng từ Google Drive", mau:"#2f6fed", buoc:[
-      "Mở Google Drive, tìm file trình chiếu cần dùng.",
-      "Bấm chuột phải vào file → chọn Chia sẻ.",
-      "Đổi 'Bị hạn chế' thành 'Bất kỳ ai có đường liên kết', vai trò Người xem.",
-      "Bấm Sao chép đường liên kết."
+    { ten:"Mở bài giảng để dạy", mau:"#2f6fed", buoc:[
+      "Vào mục Giáo án, chọn môn cần dạy.",
+      "Chọn khối lớp đang dạy.",
+      "Bấm vào ô tuần — bài giảng mở thẳng trên Google Drive.",
+      "Ô có biểu tượng màu là đã có bài, ô xám là tuần chưa có."
     ]},
-    { ten:"Gắn link vào app", mau:"#16a34a", buoc:[
-      "Mở file assets/js/links.js bằng Notepad hoặc VS Code.",
-      "Tìm mã môn cần thêm, rồi tới số lớp.",
-      "Viết theo mẫu:  5: 'link Drive',   (5 là tuần thứ 5)",
-      "Bấm Ctrl+S rồi F5 lại trang web là thấy ngay."
+    { ten:"Xem trước và tải về phòng khi mất mạng", mau:"#16a34a", buoc:[
+      "Rê chuột lên ô tuần, bấm hình con mắt để xem ngay trong app.",
+      "Trong khung xem trước có nút Tải xuống — tải sẵn ở nhà.",
+      "Bấm Trình chiếu trên Drive để dạy toàn màn hình.",
+      "Ô tuần vừa mở sẽ nằm ở mục Giáo án sử dụng gần đây ngoài trang chủ."
     ]},
-    { ten:"Dạy trên lớp", mau:"#7c3aed", buoc:[
-      "Vào môn → chọn lớp → bấm đúng ô tuần cần dạy.",
-      "Link mở thẳng sang Google Drive trong tab mới.",
-      "Muốn xem trước ngay trong app thì bấm nút con mắt trên ô tuần.",
-      "Ô tuần vừa mở sẽ nằm ở mục 'Giáo án sử dụng gần đây' ngoài trang chủ."
-    ]},
-    { ten:"Ghim bài hay dùng", mau:"#db2777", buoc:[
+    { ten:"Ghim bài và xếp lịch báo giảng", mau:"#7c3aed", buoc:[
       "Bấm hình trái tim trên ô tuần để ghim vào mục Yêu thích.",
-      "Vào Lịch dạy để xếp tuần vào từng tiết trong tuần.",
-      "Yêu thích và lịch dạy lưu trong máy đang dùng."
+      "Vào Lịch dạy, bấm dấu cộng để xếp môn vào từng tiết.",
+      "Thời khoá biểu lặp lại hằng tuần, không phải xếp lại mỗi tuần.",
+      "Đến giờ chỉ cần bấm Dạy là bài mở lên."
+    ]},
+    { ten:"Cài Bảng Xanh lên máy như một app", mau:"#db2777", buoc:[
+      "Mở Bảng Xanh bằng Chrome hoặc Microsoft Edge.",
+      "Bấm biểu tượng Cài đặt ở cuối thanh địa chỉ.",
+      "App hiện ra như phần mềm riêng, có biểu tượng ngoài màn hình.",
+      "Cài rồi thì mất mạng vẫn mở được app để xem lịch và bài đã tải."
     ]}
   ],
 
   thongBao: [
     { ten:"Chào mừng thầy cô đến với Bảng Xanh", moTa:"Vào một môn bất kỳ để xem 5 khối lớp và 35 tuần học.", thoiGian:"Hôm nay" },
-    { ten:"Cách gắn link nhanh", moTa:"Mở file assets/js/links.js rồi dán link Google Drive vào đúng môn – lớp – tuần.", thoiGian:"Hôm nay" },
-    { ten:"Mẹo nhỏ", moTa:"Bấm trái tim trên ô tuần để ghim bài hay dùng.", thoiGian:"Hôm qua" }
+    { ten:"Dạy nhanh hơn mỗi sáng", moTa:"Vào Lịch dạy xếp sẵn thời khoá biểu, đến tiết chỉ cần bấm Dạy.", thoiGian:"Hôm nay" },
+    { ten:"Mẹo nhỏ", moTa:"Bấm trái tim trên ô tuần để ghim bài hay dùng vào mục Yêu thích.", thoiGian:"Hôm qua" }
   ]
 };
