@@ -28,7 +28,7 @@ window.SUBJECTS = {
   tviet:    { name:'Tiếng Việt',            color:'#16a34a', bg:'linear-gradient(180deg,#ecf9ef,#e0f4e6)', img:'subj-tviet.png',    lop:[1,2,3,4,5] },
   toan:     { name:'Toán',                  color:'#2563eb', bg:'linear-gradient(180deg,#eaf3fe,#dceafc)', img:'subj-toan.png',     lop:[1,2,3,4,5] },
   tinhoc:   { name:'Tin học',               color:'#ea580c', bg:'linear-gradient(180deg,#fef3e8,#fdeada)', img:'subj-tinhoc.png',   lop:[3,4,5]     },
-  congnghe: { name:'Công nghệ',             color:'#475569', bg:'linear-gradient(180deg,#f2f6fb,#e5ecf5)', img:'mon-cong-nghe.svg', lop:[3,4,5]     },
+  congnghe: { name:'Công nghệ',             color:'#4f46e5', bg:'linear-gradient(180deg,#eef1fe,#e1e6fc)', img:'mon-cong-nghe.svg', lop:[3,4,5]     },
   tanh:     { name:'Tiếng Anh',             color:'#db2777', bg:'linear-gradient(180deg,#fdeef5,#fbe2ee)', img:'subj-tanh.png',     lop:[1,2,3,4,5] },
   tnxh:     { name:'Tự nhiên và Xã hội',    color:'#0f766e', bg:'linear-gradient(180deg,#eafaf7,#d9f4ee)', img:'mon-tnxh.svg',      lop:[1,2,3]     },
   khoahoc:  { name:'Khoa học',              color:'#0369a1', bg:'linear-gradient(180deg,#eaf5fe,#d9ecfb)', img:'mon-khoa-hoc.svg',  lop:[4,5]       },

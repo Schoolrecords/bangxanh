@@ -1,18 +1,66 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 220" fill="none">
-  <ellipse cx="160" cy="198" rx="112" ry="12" fill="#94a3b8" opacity=".35"/>
-  <!-- bánh răng lớn -->
-  <path d="M160 40l14 6 14-8 10 12 16-2 3 16 15 7-5 15 11 12-11 12 5 15-15 7-3 16-16-2-10 12-14-8-14 6-8-14-16 2-3-16-15-7 5-15-11-12 11-12-5-15 15-7 3-16 16 2 10-12z" fill="#60a5fa"/>
-  <circle cx="160" cy="112" r="34" fill="#dbeafe"/>
-  <circle cx="160" cy="112" r="18" fill="#3b82f6"/>
-  <!-- bánh răng nhỏ -->
-  <path d="M254 122l10 3 8-7 7 8 10-2 2 10 9 5-3 10 7 8-7 8 3 10-9 5-2 10-10-2-7 8-8-7-10 3-4-10-10-2 1-10-8-7 8-7-1-10 10-2z" fill="#fbbf24"/>
-  <circle cx="266" cy="152" r="16" fill="#fef3c7"/>
-  <!-- cờ lê -->
-  <path d="M28 178l52-52a26 26 0 0 1 32-32l-16 16 12 12 16-16a26 26 0 0 1-32 32l-52 52a10 10 0 0 1-14-14z" fill="#94a3b8"/>
+  <!-- Môn Công nghệ: lắp ghép kĩ thuật (bánh răng, cờ lê, tua vít)
+       và trồng hoa cây cảnh (chậu cây) — hai mạch chính của chương trình. -->
+  <ellipse cx="160" cy="200" rx="118" ry="12" fill="#4f46e5" opacity=".13"/>
+
   <!-- tua vít -->
-  <g transform="rotate(38 60 70)">
-    <rect x="42" y="34" width="16" height="40" rx="6" fill="#ef4444"/>
-    <rect x="46" y="72" width="8" height="34" fill="#cbd5e1"/>
-    <path d="M46 106h8v10h-8z" fill="#94a3b8"/>
+  <g transform="rotate(34 58 72)">
+    <rect x="46" y="26" width="20" height="44" rx="8" fill="#ef4444"/>
+    <rect x="49" y="30" width="6" height="34" rx="3" fill="#f87171"/>
+    <rect x="52" y="68" width="8" height="36" fill="#cbd5e1"/>
+    <path d="M52 104h8v12h-8z" fill="#94a3b8"/>
+  </g>
+
+  <!-- cờ lê -->
+  <g transform="translate(-16 6) scale(.95)">
+    <path d="M28 178l52-52a26 26 0 0 1 32-32l-16 16 12 12 16-16a26 26 0 0 1-32 32l-52 52a10 10 0 0 1-14-14z" fill="#7c8ba1"/>
+    <path d="M30 180l50-50a26 26 0 0 1 26-30l-10 10 4 4 12-12" stroke="#a8b6c8" stroke-width="5" stroke-linecap="round" fill="none"/>
+  </g>
+
+  <!-- chậu cây -->
+  <g>
+    <path d="M250 166c0-15-9-24-22-26 0 15 9 24 22 26z" fill="#34d399"/>
+    <path d="M250 166c0-17 10-27 24-29 0 17-10 27-24 29z" fill="#16a34a"/>
+    <path d="M250 172v-18" stroke="#15803d" stroke-width="5" stroke-linecap="round"/>
+    <rect x="224" y="162" width="52" height="13" rx="5" fill="#fb923c"/>
+    <path d="M229 177h42l-5 23a5 5 0 0 1-5 4h-22a5 5 0 0 1-5-4z" fill="#ea580c"/>
+  </g>
+
+  <!-- bánh răng lớn -->
+  <g transform="translate(168 100)">
+    <g fill="#4f46e5">
+      <rect x="-10" y="-70" width="20" height="26" rx="6"/>
+      <rect x="-10" y="-70" width="20" height="26" rx="6" transform="rotate(36)"/>
+      <rect x="-10" y="-70" width="20" height="26" rx="6" transform="rotate(72)"/>
+      <rect x="-10" y="-70" width="20" height="26" rx="6" transform="rotate(108)"/>
+      <rect x="-10" y="-70" width="20" height="26" rx="6" transform="rotate(144)"/>
+      <rect x="-10" y="-70" width="20" height="26" rx="6" transform="rotate(180)"/>
+      <rect x="-10" y="-70" width="20" height="26" rx="6" transform="rotate(216)"/>
+      <rect x="-10" y="-70" width="20" height="26" rx="6" transform="rotate(252)"/>
+      <rect x="-10" y="-70" width="20" height="26" rx="6" transform="rotate(288)"/>
+      <rect x="-10" y="-70" width="20" height="26" rx="6" transform="rotate(324)"/>
+    </g>
+    <circle r="52" fill="#4f46e5"/>
+    <circle r="52" fill="#4338ca" opacity=".25"/>
+    <circle r="39" fill="#e0e7ff"/>
+    <circle r="20" fill="#4338ca"/>
+    <circle r="8" fill="#c7d2fe"/>
+  </g>
+
+  <!-- bánh răng nhỏ -->
+  <g transform="translate(262 62)">
+    <g fill="#f59e0b">
+      <rect x="-7" y="-40" width="14" height="17" rx="4"/>
+      <rect x="-7" y="-40" width="14" height="17" rx="4" transform="rotate(45)"/>
+      <rect x="-7" y="-40" width="14" height="17" rx="4" transform="rotate(90)"/>
+      <rect x="-7" y="-40" width="14" height="17" rx="4" transform="rotate(135)"/>
+      <rect x="-7" y="-40" width="14" height="17" rx="4" transform="rotate(180)"/>
+      <rect x="-7" y="-40" width="14" height="17" rx="4" transform="rotate(225)"/>
+      <rect x="-7" y="-40" width="14" height="17" rx="4" transform="rotate(270)"/>
+      <rect x="-7" y="-40" width="14" height="17" rx="4" transform="rotate(315)"/>
+    </g>
+    <circle r="29" fill="#f59e0b"/>
+    <circle r="21" fill="#fef3c7"/>
+    <circle r="9" fill="#d97706"/>
   </g>
 </svg>
